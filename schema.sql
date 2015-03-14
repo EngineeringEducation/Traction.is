@@ -72,7 +72,7 @@ CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
     -- track_id int references tracks(track_id), --foreign key
     sequence int
-)
+);
 
 CREATE TABLE subject_versions (
     status varchar(255),
@@ -107,10 +107,10 @@ CREATE TABLE article_versions (
     user_id int references users(user_id) NOT NULL
 );
 
-CREATE TABLE articles_collections {
+CREATE TABLE articles_collections (
     article_id int references articles(article_id) NOT NULL,
     collection_id int references collections(collection_id) NOT NULL
-}
+);
 
 --END OF articles tables --------------------------------
 
