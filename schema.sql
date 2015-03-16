@@ -104,7 +104,6 @@ CREATE TABLE section_versions (
 
 --END OF  sections tables --timestamp----
 
-
 CREATE TABLE resources (
     resource_id serial NOT NULL PRIMARY KEY,
     section_id int references sections(section_id) NOT NULL,
@@ -114,9 +113,9 @@ CREATE TABLE resources (
 );
 
 
--- INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecrafted.com');
--- INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
--- INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
+INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecrafted.com');
+INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
+INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
 
 -- INSERT INTO collections (title, user_id) VALUES ('Observations', 1);
 -- INSERT INTO collections (title, user_id) VALUES ('OOP', 2);
@@ -164,4 +163,3 @@ insert into subject_versions (track_id, sequence, status, user_id) VALUES (1, 1,
 
 
 */
-
