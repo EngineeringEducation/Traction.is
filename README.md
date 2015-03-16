@@ -12,23 +12,14 @@ Create stored procedures to display common things (like a page, or all of a user
 ## Endpoints
 Create endpoints:
 
-- [ ] **/:track**  
-	A JSON object that represents everything needed to render a track
+- [ ] **/:collections**  
+	A JSON object that represents everything needed to render a collection
 	Should include:
-		Track title, color scheme
+		Collection title, color scheme
 		Subject listing
 		Recent changes (accepted changes, proposals)
 
-- [ ] **/:track/:subject**  
-	A JSON object that represents everything needed to display a particular subject
-	Should include:
-		Subject title
-		Article listing
-		Main article title (article with sequence 0?)
-		Sections, as an object attached to main article
-		Resources, as an object attached to sections
-
-- [ ] **/:track/:subject/:article**  
+- [ ] **/article/:articleid**  
 	A JSON object that represents everything needed to display an article, from an article identifier passed in through the URL.
 	Should include:
 		Article title
@@ -36,7 +27,7 @@ Create endpoints:
 		Sections, ordered by sequence, with titles
 		Resources, as an object attached to sections, with titles and body
 
-- [ ] **/:user**  
+- [ ] **/user/:handle**  
 	A JSON object that represents everything needed to display a user's profile
 	Should include:
 		User data, such as name, username, avatars, etc
