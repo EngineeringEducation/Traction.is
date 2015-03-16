@@ -102,7 +102,7 @@ CREATE TABLE articles (
 
 CREATE TABLE article_versions (
     article_version_id serial NOT NULL PRIMARY KEY, 
-    aritcle_id int references articles(article_id) NOT NULL,
+    article_id int references articles(article_id) NOT NULL,
     title varchar(255) NOT NULL,
     user_id int references users(user_id) NOT NULL
 );
@@ -146,6 +146,42 @@ CREATE TABLE resources (
 INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
+
+INSERT INTO collections (title, user_id) VALUES ('Observations', 1);
+INSERT INTO collections (title, user_id) VALUES ('OOP', 2);
+
+INSERT INTO subject_versions (status, user_id, sequence) VALUES ('Approved', 1, 1) ;
+insert into subjects (sequence) values (2);
+
+insert into articles(subject_id, sequence) VALUES (2, 1);
+insert into articles(subject_id, sequence) VALUES  (2, 2);
+
+insert into article_versions (article_id, title, user_id ) VALUES (1, 'Body Language', 1);
+insert into article_versions (article_id, title, user_id ) VALUES (1, 'Body Languages', 1);
+insert into article_versions(article_id, title, user_id) VALUES (2, 'Vocal', 3);
+insert into article_versions(article_id, title, user_id) VALUES (2, 'Pitch', 3);
+insert into article_versions(article_id, title, user_id) VALUES (2, 'Tone', 3);
+
+
+insert into articles_collections (article_id, collection_id) VALUES (1, 1);
+
+insert into sections (article_id, title, body) VALUES (1, 'Feet Positioning', 'Some info about the position of feet');
+insert into sections (article_id, title, body) VALUES (1, 'Arms', 'Crossed arms means something or another');
+
+insert into sections (article_id, title, body) VALUES (2, 'Vocal Stuff', 'Some info about how you can tell something about someone by their voice. Pitch this and tone that');
+
+insert into section_versions (section_id, user_id, status, time_last_edited) VALUES (1, 1, 'Approved', now());
+insert into section_versions (section_id, user_id, status, time_last_edited) VALUES (2, 1, 'Approved', now());
+insert into section_versions (section_id, user_id, status, time_last_edited) VALUES (3, 1, 'Approved', now());
+insert into section_versions (section_id, user_id, status, time_last_edited) VALUES (3, 1, 'Proposed', now());
+
+
+insert into resources (section_id, title, body) VALUES (1, 'Foot Positioning Wiki', 'Some tagline about this thing');
+insert into resources (section_id, title, body) VALUES (1, 'Importance of Something', 'Even more information about this thing');
+
+insert into resources (section_id, title, body) VALUES (2, 'Local arms dealer', 'Half price before summer time at your local gym');
+insert into resources (section_id, title, body) VALUES (3, 'More stuff on vocal', 'Here is an explanation of said stuff');
+
 /*
 INSERT INTO tracks (title, sequence) VALUES ('UX', 1);
 INSERT INTO tracks (title, sequence) VALUES ('Growth', 2);
