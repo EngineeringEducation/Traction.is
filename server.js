@@ -25,14 +25,16 @@ pg.connect(conString, function(err, client) {
 
 //---------- GET REQUESTS/ENDPOINTS -----------
 
-//GET request: returns track
-app.get('/track/:trackID', function (req, res) {
-  db.query("SELECT * FROM users", function(err, result) {
-    if (err) {
-      res.status(500).send(err);
+
+app.get("/collections/:collection_id", function(request, response) {
+  var users; 
+
+  db.query("SELECT * FROM collections where collection_id = $1", [request.params.collection_id], function (err, results) {
+    if (err){
+      response.status(500).send(err);
     } else {
-    		res.send(result.rows)
-    }
+      response.send(results.rows);
+    };
   });
 });
 
