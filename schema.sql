@@ -20,6 +20,7 @@ CREATE TABLE permissions (
 CREATE TABLE collections (
     collection_id serial NOT NULL PRIMARY KEY,
     title varchar(255) NOT NULL,
+    created timestamp DEFAULT localtimestamp NOT NULL,
     user_id int references users(user_id) NOT NULL
 );
 
@@ -27,7 +28,6 @@ CREATE TABLE collections (
 CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
     body text NOT NULL,
-    sequence int
 );
 
 
@@ -70,6 +70,7 @@ CREATE TABLE categories (
 
 CREATE TABLE sections (
     section_id serial NOT NULL PRIMARY KEY,
+    category_id references categories(category_id) , 
     article_id int references articles(article_id) NOT NULL,
     title varchar(255) NOT NULL,
     body text,
@@ -90,6 +91,7 @@ CREATE TABLE resources (
     resource_id serial NOT NULL PRIMARY KEY,
     section_id int references sections(section_id) NOT NULL,
     title varchar(255) NOT NULL,
+    created timestamp DEFAULT localtimestamp NOT NULL,
     user_id int references users(user_id) NOT NULL,
     body text
 );
