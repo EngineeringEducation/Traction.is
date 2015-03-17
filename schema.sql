@@ -20,13 +20,14 @@ CREATE TABLE permissions (
 CREATE TABLE collections (
     collection_id serial NOT NULL PRIMARY KEY,
     title varchar(255) NOT NULL,
-    user_id int references users(user_id)
+    user_id int references users(user_id) NOT NULL
 );
 
 
 CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
-    sequence int
+    sequence int, 
+    body text NOT NULL
 );
 
 CREATE TABLE subject_versions (
@@ -34,18 +35,18 @@ CREATE TABLE subject_versions (
     user_id int references users(user_id) NOT NULL, 
     created timestamp DEFAULT localtimestamp NOT NULL,
     auditor_id int references users(user_id),  
-    approved boolean default false NOT NULL
+    approved boolean DEFAULT false NOT NULL,
+    body text NOT NULL
 ); 
 
 CREATE TABLE articles (
     article_id serial NOT NULL PRIMARY KEY,
-    subject_id int references subjects(subject_id)
+    subject_id int references subjects(subject_id) NOT NULL
 );
 
 CREATE TABLE article_versions (
     article_version_id serial NOT NULL PRIMARY KEY, 
     article_id int references articles(article_id) NOT NULL,
-    title varchar(255) NOT NULL,
     created timestamp DEFAULT localtimestamp NOT NULL,
     user_id int references users(user_id) NOT NULL,
     auditor_id int references users(user_id),
