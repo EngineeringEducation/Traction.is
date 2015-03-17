@@ -14,10 +14,27 @@ Create endpoints:
 
 - [ ] **/:collections**  
 	A JSON object that represents everything needed to render a collection
-	Should include:
-		Collection title, color scheme
-		Subject listing
-		Recent changes (accepted changes, proposals)
+	
+```json
+// Collections
+{
+	collection_title : "",
+	collection_owner : "",
+	"articles" : [article, article, article]
+}
+```
+
+```json
+// Collections Recent changes (returns if user is logged in)
+{
+	collection_title : "",
+	collection_owner : "",
+	"articles" : [article, article, article],
+	recent_changes: [article_version, article_version]
+}
+```
+
+	Recent changes should be article_versions whose article is part of the collection, and that have approved = False and auditor_id = NULL, limit 10, order by timestamp (newest first)
 
 - [ ] **/article/:articleid**  
 	A JSON object that represents everything needed to display an article, from an article identifier passed in through the URL.
