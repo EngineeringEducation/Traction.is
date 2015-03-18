@@ -1,17 +1,12 @@
 \c traction
 
-<<<<<<< HEAD
-
 --inserting users
-=======
->>>>>>> upstream/master
 INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
 
-<<<<<<< HEAD
 
---inserting permissions
+
 
 --inserting collections
 INSERT INTO collections (title, user_id) VALUES ('Observations', 1);
@@ -55,7 +50,7 @@ INSERT INTO section_versions (section_id, user_id, body, auditor_id, approved) V
 
 --inserting resources
 INSERT INTO resources (resource_id, section_id, title, user_id, body) VALUES (1, 1, 'OOP', 1, 'This body...this body..is in the resource table!!');
-=======
+
 insert into collections (title, user_id) VALUES ('Why Wen is so awesome', 3);
 insert into collections(title, user_id) values ('OOP', 2);
 
@@ -67,10 +62,6 @@ insert into subject_versions (subject_id, body, user_id, approved) VALUES (1, 'G
 insert into subject_versions (subject_id, body, user_id, approved) VALUES (1, 'Funny Jokes', 3, false);
 insert into subject_versions (subject_id, body, user_id, approved) values (2, 'Inheritance', 1, true);
 insert into subject_versions (subject_id, body, user_id, approved) values (3, 'Polymorphism', 2, true);
-
-insert into articles(subject_id) values (1);
-insert into articles(subject_id) values (2);
-insert into articles(subject_id) values (3);
 
 
 insert into article_versions (article_id, user_id, approved) VALUES 
@@ -117,7 +108,3 @@ insert into resources(section_id, title, user_id, body)
 insert into resources(section_id, title, user_id, body) 
 	values (2, 'What is this', 2, 'who knows');
 insert into resources (section_id, title, user_id, body) VALUES (1, 'second resource for this', 1, 'Hope this works!');
-
-
-
->>>>>>> upstream/master

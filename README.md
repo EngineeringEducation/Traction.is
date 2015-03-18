@@ -48,8 +48,8 @@ Recent changes should be article_versions whose article is part of the collectio
 	A JSON object that represents everything needed to display a user's profile
 	Should include:
 		User data, such as name, username, avatars, etc
-		Recent contributions (and a generated link to those contributions based on the url schema above) ordered by "Accepted" and "Proposed", grouped by Subject
-		IF the user is a mod, an additional list of proposed changes to the subjects or tracks they have purview over
+		Recent contributions (and a generated link to those contributions based on the url schema above) ordered by "Accepted" and "Proposed"
+		IF the user is a mod, an additional list of proposed changes to the articles they have purview over
 
 
 

@@ -1,4 +1,6 @@
 .env
+.notes
+.DS_Store
 Procfile
 
 /node_modules
