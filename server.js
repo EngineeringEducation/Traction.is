@@ -66,10 +66,23 @@ app.get('/user/:user_name', function (req, res) {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.send(result.rows);
+      var result1= result.rows;
     }
   });
 });
+
+
+// app.get(/user/:username, function (res, req) {
+//     db.query(query, callback)
+//     db.query(query, callback)
+//     db.query(query, callback)
+//     var completion = 0;
+//     var callback = function (err, result) {
+//         completion++;
+//         if completion == 3
+//             do stuff
+//     }
+// })
 
 
 app.listen(3000, function() {
