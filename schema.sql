@@ -29,6 +29,7 @@ CREATE TABLE subjects (
     body text NOT NULL
 );
 
+
 CREATE TABLE subject_versions (
     subject_id int references subjects(subject_id) NOT NULL,
     body text NOT NULL,
