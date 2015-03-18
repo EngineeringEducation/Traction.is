@@ -20,18 +20,19 @@ CREATE TABLE permissions (
 CREATE TABLE collections (
     collection_id serial NOT NULL PRIMARY KEY,
     title varchar(255) NOT NULL,
-    user_id int references users(user_id)
+    created timestamp DEFAULT localtimestamp NOT NULL,
+    owner_id int references users(user_id) NOT NULL
 );
-
 
 CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
-    sequence int
+    body text NOT NULL
 );
 
 CREATE TABLE subject_versions (
     subject_id int references subjects(subject_id) NOT NULL,
-    user_id int references users(user_id) NOT NULL, 
+    body text NOT NULL,
+    owner_id int references users(user_id) NOT NULL, 
     created timestamp DEFAULT localtimestamp NOT NULL,
     auditor_id int references users(user_id),  
     approved boolean default false NOT NULL
@@ -39,24 +40,15 @@ CREATE TABLE subject_versions (
 
 CREATE TABLE articles (
     article_id serial NOT NULL PRIMARY KEY,
-    subject_id int references subjects(subject_id)
-);
-
-CREATE TABLE article_versions (
-    article_version_id serial NOT NULL PRIMARY KEY, 
-    article_id int references articles(article_id) NOT NULL,
-    title varchar(255) NOT NULL,
+    subject_id int references subjects(subject_id),
     created timestamp DEFAULT localtimestamp NOT NULL,
-    user_id int references users(user_id) NOT NULL,
-    auditor_id int references users(user_id),
-    approved boolean default false NOT NULL
+    owner_id int references users(user_id) NOT NULL,
 );
 
 CREATE TABLE articles_collections (
     article_id int references articles(article_id) NOT NULL,
     collection_id int references collections(collection_id) NOT NULL
 );
-
 
 CREATE TABLE categories (
     category_id serial NOT NULL PRIMARY KEY,
@@ -65,9 +57,9 @@ CREATE TABLE categories (
     title varchar(255) NOT NULL
 );
 
-
 CREATE TABLE sections (
     section_id serial NOT NULL PRIMARY KEY,
+    category_id int references categories(category_id), 
     article_id int references articles(article_id) NOT NULL,
     title varchar(255) NOT NULL,
     body text,
@@ -76,18 +68,18 @@ CREATE TABLE sections (
 
 CREATE TABLE section_versions (
     section_id int references sections(section_id) NOT NULL,
-    user_id int references users(user_id) NOT NULL, 
+    owner_id int references users(user_id) NOT NULL, 
     body text NOT NULL, 
     created timestamp DEFAULT localtimestamp NOT NULL,
     auditor_id int references users(user_id),
-    approved boolean default false NOT NULL 
+    approved boolean default false NOT NULL
 );
-
 
 CREATE TABLE resources (
     resource_id serial NOT NULL PRIMARY KEY,
     section_id int references sections(section_id) NOT NULL,
     title varchar(255) NOT NULL,
-    user_id int references users(user_id) NOT NULL,
+    created timestamp DEFAULT localtimestamp NOT NULL,
+    owner_id int references users(user_id) NOT NULL,
     body text
 );
