@@ -62,11 +62,11 @@ app.get('/track/subject/article/articleID', function (req, res) {
 
 //GET request: returns user's profile
 app.get('/user/:user_name', function (req, res) {
-  db.query("SELECT * FROM users WHERE user_name=($1)", [req.params.user_name], function(err, result) {
+  db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       res.status(500).send(err);
     } else {
-    		res.send(result.rows)
+      res.send(result.rows);
     }
   });
 });
