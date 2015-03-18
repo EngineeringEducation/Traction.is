@@ -27,7 +27,7 @@ CREATE TABLE collections (
 
 CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
-    body text NOT NULL,
+    body text NOT NULL
 );
 
 
@@ -70,7 +70,7 @@ CREATE TABLE categories (
 
 CREATE TABLE sections (
     section_id serial NOT NULL PRIMARY KEY,
-    category_id references categories(category_id) , 
+    category_id int references categories(category_id), 
     article_id int references articles(article_id) NOT NULL,
     title varchar(255) NOT NULL,
     body text,
