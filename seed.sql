@@ -16,11 +16,11 @@ INSERT INTO collections (title, user_id) VALUES ('Test Collection', 3);
 
 
 --inserting subjects/versions
-INSERT INTO subjects (subject_id, sequence, body) VALUES (1,1, 'This is subjects body');
+INSERT INTO subjects (subject_id, body) VALUES (1, 'This is subjects body');
 INSERT INTO subject_versions (subject_id, user_id, approved, body) VALUES (1, 1, false, 'This is body text of subjects_vesions 1');
-INSERT INTO subjects (subject_id, sequence, body) VALUES (2,2, 'This is subjects body 2');
+INSERT INTO subjects (subject_id, body) VALUES (2, 'This is subjects body 2');
 INSERT INTO subject_versions (subject_id, user_id, approved, body) VALUES (2,2,false, 'This is body text of subject_versions 2');
-INSERT INTO subjects (subject_id, sequence, body) VALUES (3,3, 'This is subjects body 3');
+INSERT INTO subjects (subject_id, body) VALUES (3, 'This is subjects body 3');
 INSERT INTO subject_versions (subject_id, user_id, approved, body) VALUES (3,3,false, 'This is body text of subject_versions 3');
 
 

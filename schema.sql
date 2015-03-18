@@ -1,4 +1,3 @@
-
 CREATE DATABASE traction;
 
 \c traction;
@@ -26,7 +25,6 @@ CREATE TABLE collections (
 
 CREATE TABLE subjects (
     subject_id serial NOT NULL PRIMARY KEY,
-    sequence int,
     body text NOT NULL
 );
 
@@ -71,6 +69,7 @@ CREATE TABLE categories (
 CREATE TABLE sections (
     section_id serial NOT NULL PRIMARY KEY,
     article_id int references articles(article_id) NOT NULL,
+    category_id int,
     title varchar(255) NOT NULL,
     body text,
     sequence int NOT NULL
