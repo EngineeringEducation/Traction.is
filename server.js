@@ -41,24 +41,60 @@ pg.connect(conString, function(err, client) {
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
-  db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], function(err, result) {
+  db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], callback);
+  db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], callback);
+  db.query("SELECT * from resources_view WHERE article_id = $1", [req.params.article_id], callback);
+
+  var completion = 0;
+  var articleJSON = {};
+
+  var callback = function (err, result) {
+    completion++;
+    if (completion == 3){
+
+      res.send 
+    }
+
+  }
+      // function(err, result) {
+    // if (err) {
+    //   res.status(500).send(err);
+    // } else {
+    //   var articleViewArr = result.rows;
+    //   //res.send(result.rows);
+    //      db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], function(err, result) {
+    //         if (err) {
+    //           res.status(500).send(err);
+    //         } else {
+    //           res.send(result.rows);
+    //         }
+    //      });
+    // }
+    //});
+});
+
+//GET request: returns user's profile
+app.get('/user/:user_name', function (req, res) {
+  db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       res.status(500).send(err);
     } else {
-      var articleViewArr = result.rows;
-      //res.send(result.rows);
-         db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], function(err, result) {
-            if (err) {
-              res.status(500).send(err);
-            } else {
-              res.send(result.rows);
-            }
-         });
+      var result1= result.rows;
     }
   });
 });
 
-
+// app.get(/user/:username, function (res, req) {
+//     db.query(query, callback)
+//     db.query(query, callback)
+//     db.query(query, callback)
+//     var completion = 0;
+//     var callback = function (err, result) {
+//         completion++;
+//         if completion == 3
+//             do stuff
+//     }
+// })
 
 
 app.listen(3000, function() {

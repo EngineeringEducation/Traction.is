@@ -14,10 +14,27 @@ Create endpoints:
 
 - [ ] **/:collections**  
 	A JSON object that represents everything needed to render a collection
-	Should include:
-		Collection title, color scheme
-		Subject listing
-		Recent changes (accepted changes, proposals)
+	
+```json
+// Collections
+{
+	"collection_title" : "",
+	"collection_owner" : "",
+	"articles" : [article, article, article]
+}
+```
+
+```json
+// Collections Recent changes (returns if user is logged in)
+{
+	"collection_title" : "",
+	"collection_owner" : "",
+	"articles" : [article, article, article],
+	"recent_changes": [article_version, article_version]
+}
+```
+
+Recent changes should be article_versions whose article is part of the collection, and that have approved = False and auditor_id = NULL, limit 10, order by timestamp (newest first)
 
 - [ ] **/article/:articleid**  
 	A JSON object that represents everything needed to display an article, from an article identifier passed in through the URL.
@@ -31,8 +48,8 @@ Create endpoints:
 	A JSON object that represents everything needed to display a user's profile
 	Should include:
 		User data, such as name, username, avatars, etc
-		Recent contributions (and a generated link to those contributions based on the url schema above) ordered by "Accepted" and "Proposed", grouped by Subject
-		IF the user is a mod, an additional list of proposed changes to the subjects or tracks they have purview over
+		Recent contributions (and a generated link to those contributions based on the url schema above) ordered by "Accepted" and "Proposed"
+		IF the user is a mod, an additional list of proposed changes to the articles they have purview over
 
 
 
