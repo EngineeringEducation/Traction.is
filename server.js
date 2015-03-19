@@ -26,50 +26,39 @@ pg.connect(conString, function(err, client) {
 //---------- GET REQUESTS/ENDPOINTS -----------
 
 
-app.get("/collections/:collection_id", function(request, response) {
-  var users; 
+// app.get("/collections/:collection_id", function(request, response) {
+//   var users; 
 
-  db.query("SELECT * FROM collections where collection_id = $1", [request.params.collection_id], function (err, results) {
-    if (err){
-      response.status(500).send(err);
-    } else {
-      response.send(results.rows);
-    };
-  });
-});
+//   db.query("SELECT * FROM collections where collection_id = $1", [request.params.collection_id], function (err, results) {
+//     if (err){
+//       response.status(500).send(err);
+//     } else {
+//       response.send(results.rows);
+//     };
+//   });
+// });
 
-//GET request: returns subject
-app.get('/subject/:subjectID', function (req, res) {
-  db.query("SELECT * FROM users", function(err, result) {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-    		res.send(result.rows)
-    }
-  });
-});
 
 //GET request: returns article
-app.get('/track/subject/article/articleID', function (req, res) {
-  db.query("SELECT * FROM users", function(err, result) {
+app.get('/article/:article_id', function (req, res) {
+  db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], function(err, result) {
     if (err) {
       res.status(500).send(err);
     } else {
-    		res.send(result.rows)
+      var articleViewArr = result.rows;
+      //res.send(result.rows);
+         db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], function(err, result) {
+            if (err) {
+              res.status(500).send(err);
+            } else {
+              res.send(result.rows);
+            }
+         });
     }
   });
 });
 
-//GET request: returns user's profile
-app.get('/user/:user_name', function (req, res) {
-  db.query("SELECT * FROM users WHERE user_name=($1)", [req.params.user_name], function(err, result) {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-    		res.send(result.rows)
-    }
-  });
-});
+
 
 
 app.listen(3000, function() {
