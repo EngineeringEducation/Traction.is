@@ -36,11 +36,6 @@ INSERT INTO categories (article_id, sequence, title) VALUES (1, 1, 'OOP');
 INSERT INTO sections (category_id, article_id, title, body, sequence) 
 	VALUES (1, 1,'title here', 'This is the body. See how long it is?', 1);
 
---inserting section/versions
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) 
-	VALUES (1, 1, 'So much body. Body changes maybe auditor_id will be included and approved', 1, true);
-
-
 --inserting resources
 INSERT INTO resources (section_id, title, owner_id, body) VALUES (1, 'OOP', 1, 'This body...this body..is in the resource table!!');
 insert into collections (title, owner_id) VALUES ('Why Wen is so awesome', 3);

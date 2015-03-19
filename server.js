@@ -41,18 +41,47 @@ pg.connect(conString, function(err, client) {
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
-  db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], callback);
-  db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], callback);
-  db.query("SELECT * from resources_view WHERE article_id = $1", [req.params.article_id], callback);
+  db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], 
+    function(err, result){callback('article_view', err, result)});
+  db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], 
+    function(err, result){callback('sections_view', err, result)});
+  db.query("SELECT * from resources_view WHERE article_id = $1", [req.params.article_id],
+    function(err, result){callback('resources_view', err, result)});
 
   var completion = 0;
   var articleJSON = {};
 
-  var callback = function (err, result) {
+  var callback = function (querytype, err, result) {
     completion++;
+
+    //test if article_view
+    if (querytype == "article_view"){
+      console.log("article num " + result.rows.length);
+      for (var i = 0; i < result.rows.length; i++){
+        articleJSON["article_id"] = result.rows[i]["article_id"];
+        articleJSON["created"] = result.rows[i]["created"];
+        articleJSON["subject"] = result.rows[i]["subject"];
+        articleJSON["owner_id"] = result.rows[i]["owner_id"];
+        articleJSON["user_name"] = result.rows[i]["user_name"];
+        console.log(articleJSON);
+      }
+    }
+
+    if (querytype == "sections_view"){
+      console.log("sections num " + result.rows.length);
+      for (var i = 0; i < result.rows.length; i++){
+        articleJSON["article_id"] = result.rows[i]["article_id"];
+        articleJSON["created"] = result.rows[i]["created"];
+        articleJSON["subject"] = result.rows[i]["subject"];
+        articleJSON["owner_id"] = result.rows[i]["owner_id"];
+        articleJSON["user_name"] = result.rows[i]["user_name"];
+        console.log(articleJSON);
+      }
+
+    }
+
     if (completion == 3){
 
-      res.send 
     }
 
   }
