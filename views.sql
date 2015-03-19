@@ -5,8 +5,15 @@ CREATE VIEW user_view AS
 	FROM users, permissions
 	WHERE users.user_id = permissions.user_id AND ;
 
-SELECT sub.body, av.user_id, av.created 
-	FROM article_versions av, subjects sub, articles a 
+
+
+
+
+
+
+
+SELECT sub.body, a.owner_id, a.created 
+	FROM articles a, subjects sub
 	WHERE sub.subject_id = a.subject_id 
 	AND a.article_id = av.article_id;
 
@@ -23,10 +30,10 @@ SELECT sec.title, secv.user_id
 	DESC LIMIT 10;
 
 CREATE VIEW article_view as
-select av.article_id, av.created, av.user_id, s.body 
-	from article_versions av, subjects s, articles a 
-	where a.article_id = av.article_id and s.subject_id = a.subject_id 
-	and av.approved = true;
+SELECT av.article_id, av.created, av.user_id, s.body 
+	FROM article_versions av, subjects s, articles a 
+	WHERE a.article_id = av.article_id and s.subject_id = a.subject_id 
+	AND av.approved = true;
 
 CREATE VIEW collectionsView AS
 SELECT collections.collection_id, collections.title, collections.user_id, articles_collections.article_id
