@@ -25,28 +25,12 @@ CREATE TABLE collections (
 
 );
 
-CREATE TABLE subjects (
-    subject_id serial NOT NULL PRIMARY KEY,
-    body text NOT NULL
-);
-
-
-CREATE TABLE subject_versions (
-    subject_id int references subjects(subject_id) NOT NULL,
-    body text NOT NULL,
-
-    owner_id int references users(user_id) NOT NULL, 
-
-    created timestamp DEFAULT localtimestamp NOT NULL,
-    auditor_id int references users(user_id),  
-    approved boolean default false NOT NULL
-); 
-
 CREATE TABLE articles (
     article_id serial NOT NULL PRIMARY KEY,
     subject_id int references subjects(subject_id),
     created timestamp DEFAULT localtimestamp NOT NULL,
-    owner_id int references users(user_id) NOT NULL
+    owner_id int references users(user_id) NOT NULL, 
+    subject text NOT NULL
 );
 
 CREATE TABLE articles_collections (
