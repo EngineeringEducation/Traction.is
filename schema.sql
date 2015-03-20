@@ -26,11 +26,12 @@ CREATE TABLE collections (
 
 CREATE TABLE articles (
     article_id serial NOT NULL PRIMARY KEY,
-    subject_id int references subjects(subject_id),
     created timestamp DEFAULT localtimestamp NOT NULL,
     owner_id int references users(user_id) NOT NULL, 
     subject text NOT NULL
 );
+
+-- ^^ insert into articles (article_id, subject, owner_id) VALUES (1, 'blah blah', 1);
 
 CREATE TABLE articles_collections (
     article_id int references articles(article_id) NOT NULL,
@@ -59,7 +60,7 @@ CREATE TABLE section_versions (
     body text NOT NULL, 
     created timestamp DEFAULT localtimestamp NOT NULL,
     auditor_id int references users(user_id),
-    approved boolean default false NOT NULL
+    status varchar(200) NOT NULL
 );
 
 CREATE TABLE resources (
