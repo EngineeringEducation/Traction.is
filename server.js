@@ -29,7 +29,7 @@ pg.connect(conString, function(err, client) {
 app.get("/collections/:collection_id", function(request, response) {
   var users; 
 
-  db.query("SELECT * FROM collections where collection_id = $1", [request.params.collection_id], function (err, results) {
+  db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [request.params.collection_id], function (err, results) {
     if (err){
       response.status(500).send(err);
     } else {
