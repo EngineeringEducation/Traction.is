@@ -26,7 +26,6 @@ CREATE TABLE collections (
 
 CREATE TABLE articles (
     article_id serial NOT NULL PRIMARY KEY,
-    subject_id int references subjects(subject_id),
     created timestamp DEFAULT localtimestamp NOT NULL,
     owner_id int references users(user_id) NOT NULL, 
     subject text NOT NULL
