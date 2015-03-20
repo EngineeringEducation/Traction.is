@@ -20,5 +20,6 @@ select c.category_id, c.article_id, c.title as category_title,
 
 CREATE VIEW resources_view as
 select s.section_id, s.article_id, r.resource_id, r.title as 
-	resource_title, r.owner_id, r.created, r.body from sections s, 
-	resources r where s.section_id = r.section_id;
+	resource_title, r.owner_id, u.user_name, r.created, r.body from sections s, 
+	resources r, users u where s.section_id = r.section_id and u.user_id = r.owner_id 
+	order by s.section_id, s.sequence;
