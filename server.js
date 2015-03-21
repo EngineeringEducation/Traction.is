@@ -62,29 +62,59 @@ app.get('/track/subject/article/articleID', function (req, res) {
 
 //GET request: returns user's profile
 app.get('/user/:user_name', function (req, res) {
+  var user;
+  var userArticles;
+  var completion = 0;
+  var profileJSON = {};
+
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       res.status(500).send(err);
+      console.log(err);
     } else {
-      var result1= result.rows;
+      user = result.rows[0];
+      console.log(user);
+      profileJSON['userInfo'] = user;
+
+      db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
+        if (err) {
+          res.status(500).send(err);
+          console.log(err);
+        } else {
+          userArticles = result.rows;
+          profileJSON['articleInfo'] = userArticles;
+
+          db.query("SELECT title, created, approved FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+            if (err) {
+              res.status(500).send(err);
+              console.log(err);
+            } else {
+              userSections = result.rows;
+              profileJSON['sectionInfo'] = userSections;
+
+              db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                if (err) {
+                  res.status(500).send(err);
+                  console.log(err);
+                } else {
+
+                  if (user.role == 'Mod' || user.role == 'Admin') {
+                    pendingReviewsForUser = result.rows;
+                    profileJSON['pendingInfo'] = pendingReviewsForUser;
+                  }  
+                  
+                  res.send(profileJSON);
+                }                
+              });
+            }
+          });
+        }
+      });
     }
   });
 });
 
-
-// app.get(/user/:username, function (res, req) {
-//     db.query(query, callback)
-//     db.query(query, callback)
-//     db.query(query, callback)
-//     var completion = 0;
-//     var callback = function (err, result) {
-//         completion++;
-//         if completion == 3
-//             do stuff
-//     }
-// })
-
-
+  
 app.listen(3000, function() {
   console.log('listening');
 });
