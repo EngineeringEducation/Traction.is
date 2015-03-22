@@ -16,7 +16,7 @@ select c.category_id, c.article_id, c.title as category_title,
 	sv.body as section_body, sv.owner_id, sv.created 
 	from categories c, 
 	sections s, section_versions sv where c.category_id = s.category_id and 
-	s.section_id = sv.section_id and sv.approved = true order by s.sequence;
+	s.section_id = sv.section_id and sv.status = 'Accepted' order by s.sequence;
 
 CREATE VIEW resources_view as
 select s.section_id, s.article_id, r.resource_id, r.title as 
