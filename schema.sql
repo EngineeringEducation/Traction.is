@@ -31,7 +31,6 @@ CREATE TABLE articles (
     subject text NOT NULL
 );
 
-
 CREATE TABLE articles_collections (
     article_id int references articles(article_id) NOT NULL,
     collection_id int references collections(collection_id) NOT NULL
@@ -59,7 +58,7 @@ CREATE TABLE section_versions (
     body text NOT NULL, 
     created timestamp DEFAULT localtimestamp NOT NULL,
     auditor_id int references users(user_id),
-    approved boolean default false NOT NULL
+    status varchar(200) NOT NULL
 );
 
 CREATE TABLE resources (

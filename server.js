@@ -184,29 +184,6 @@ app.get('/article/:article_id', function (req, res) {
   }
 });
 
-//GET request: returns user's profile
-app.get('/user/:user_name', function (req, res) {
-  db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      var result1= result.rows;
-    }
-  });
-});
-
-// app.get(/user/:username, function (res, req) {
-//     db.query(query, callback)
-//     db.query(query, callback)
-//     db.query(query, callback)
-//     var completion = 0;
-//     var callback = function (err, result) {
-//         completion++;
-//         if completion == 3
-//             do stuff
-//     }
-// })
-
 
 app.listen(3000, function() {
   console.log('listening');
