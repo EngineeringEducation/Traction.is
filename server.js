@@ -19,6 +19,7 @@ pg.connect(conString, function(err, client) {
   if (err) {
     console.log(err);
   } else {
+    console.log("Connected to database");
     db = client;
   }
 });
@@ -26,14 +27,14 @@ pg.connect(conString, function(err, client) {
 //---------- GET REQUESTS/ENDPOINTS -----------
 
 
-app.get("/collections/:collection_id", function(request, response) {
-  var users; 
-
-  db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [request.params.collection_id], function (err, results) {
+app.get("/collections/:collection_id", function(req, res) {
+  console.log(req.params.collection_id);
+  db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
     if (err){
-      response.status(500).send(err);
+      res.status(500).send(err);
     } else {
-      response.send(results.rows);
+      // console.log(res);
+      res.send(results.rows);
     };
   });
 });
