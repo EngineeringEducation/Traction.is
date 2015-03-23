@@ -11,10 +11,10 @@ INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
 INSERT INTO collections (title, owner_id) VALUES ('OOP', 1);
 INSERT INTO collections (title, owner_id) VALUES ('Test Collection', 1);
 
---inserting articles
-INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
-INSERT INTO articles (owner_id, subject) VALUES (2, 'this is another subject');
-INSERT INTO articles (owner_id, subject) VALUES (3, 'and this is also a subject. wudduya know.');
+--inserting permissions
+INSERT INTO permissions (role, user_id) VALUES ('Mod', 1);
+INSERT INTO permissions (role, user_id) VALUES ('User', 2);
+INSERT INTO permissions (role, user_id) VALUES ('User', 3);
 
 --inserting articles
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');

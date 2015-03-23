@@ -36,4 +36,17 @@ WHERE collections.collection_id = articles_collections.collection_id AND article
 -- ORDER BY article_versions.created DESC
 -- LIMIT 10
 
+-- #TODO should rename sections_view or section_view later, both are currently used
+
+CREATE VIEW section_view AS
+	SELECT sec.title, secv.created, secv.owner_id, secv.status
+	FROM sections sec, section_versions secv 
+	WHERE sec.section_id = secv.section_id
+	ORDER BY secv.status, secv.created 
+	DESC LIMIT 10;
+
+CREATE VIEW proposed_edits AS
+	SELECT users.user_name, secv.owner_id, secv.status, secv.body 
+	FROM section_versions secv, users
+	WHERE users.user_id = secv.owner_id AND status = 'Pending';
 
