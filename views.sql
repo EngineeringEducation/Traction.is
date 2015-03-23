@@ -23,3 +23,18 @@ select s.section_id, s.article_id, r.resource_id, r.title as
 	resource_title, r.owner_id, u.user_name, r.created, r.body from sections s, 
 	resources r, users u where s.section_id = r.section_id and u.user_id = r.owner_id 
 	order by s.section_id, s.sequence;
+
+-- #TODO should rename sections_view or section_view later, both are currently used
+
+CREATE VIEW section_view AS
+	SELECT sec.title, secv.created, secv.owner_id, secv.status
+	FROM sections sec, section_versions secv 
+	WHERE sec.section_id = secv.section_id
+	ORDER BY secv.status, secv.created 
+	DESC LIMIT 10;
+
+CREATE VIEW proposed_edits AS
+	SELECT users.user_name, secv.owner_id, secv.status, secv.body 
+	FROM section_versions secv, users
+	WHERE users.user_id = secv.owner_id AND status = 'Pending';
+

@@ -32,8 +32,6 @@ app.get('/article/:article_id', function (req, res) {
     function(err, result){callback('article_view', err, result)});
   db.query("SELECT * from resources_view WHERE article_id = $1", [req.params.article_id],
     function(err, result){callback('resources_view', err, result)});
-
-
   db.query("SELECT * from sections_view WHERE article_id = $1", [req.params.article_id], 
     function(err, result){callback('sections_view', err, result)});
 
@@ -185,7 +183,61 @@ app.get('/article/:article_id', function (req, res) {
   }
 });
 
+//GET request: returns user's profile
+//#TODO : Refactor all these callbacks
+app.get('/user/:user_name', function (req, res) {
+  var user;
+  var userArticles;
+  var completion = 0;
+  var profileJSON = {};
 
+  db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
+    if (err) {
+      res.status(500).send(err);
+      console.log(err);
+    } else {
+      user = result.rows[0];
+      console.log(user);
+      profileJSON['userInfo'] = user;
+
+      db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
+        if (err) {
+          res.status(500).send(err);
+          console.log(err);
+        } else {
+          userArticles = result.rows;
+          profileJSON['articleInfo'] = userArticles;
+
+          db.query("SELECT title, created, status FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+            if (err) {
+              res.status(500).send(err);
+              console.log(err);
+            } else {
+              userSections = result.rows;
+              profileJSON['sectionInfo'] = userSections;
+
+              db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                if (err) {
+                  res.status(500).send(err);
+                  console.log(err);
+                } else {
+
+                  if (user.role == 'Mod' || user.role == 'Admin') {
+                    pendingReviewsForUser = result.rows;
+                    profileJSON['pendingInfo'] = pendingReviewsForUser;
+                  }  
+                  
+                  res.send(profileJSON);
+                }                
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+});
+  
 app.listen(3000, function() {
   console.log('listening');
 });
