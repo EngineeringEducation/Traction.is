@@ -11,12 +11,10 @@ INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
 INSERT INTO collections (title, owner_id) VALUES ('OOP', 1);
 INSERT INTO collections (title, owner_id) VALUES ('Test Collection', 1);
 
-
---inserting articles/versions
-INSERT INTO articles (owner_id, subject) VALUES (1, '1This is dummy subject');
-INSERT INTO articles (owner_id, subject) VALUES (2, '2This is dummy subject');
-INSERT INTO articles (owner_id, subject) VALUES (3, '3This is dummy subject');
-
+--inserting articles
+INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
+INSERT INTO articles (owner_id, subject) VALUES (2, 'this is another subject');
+INSERT INTO articles (owner_id, subject) VALUES (3, 'and this is also a subject. wudduya know.');
 
 --inserting articles
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
@@ -26,7 +24,6 @@ INSERT INTO articles (owner_id, subject) VALUES (3, 'and this is also a subject.
 --inserting articles/collections
 INSERT INTO articles_collections (article_id, collection_id) VALUES (1,1);
 INSERT INTO articles_collections (article_id, collection_id) VALUES (2,2);
-
 
 --inserting categories
 INSERT INTO categories (article_id, sequence, title) VALUES (1, 1, 'Basics');

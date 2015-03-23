@@ -23,3 +23,17 @@ select s.section_id, s.article_id, r.resource_id, r.title as
 	resource_title, r.owner_id, u.user_name, r.created, r.body from sections s, 
 	resources r, users u where s.section_id = r.section_id and u.user_id = r.owner_id 
 	order by s.section_id, s.sequence;
+
+CREATE VIEW collectionsView AS
+SELECT collections.collection_id, collections.title, collections.user_id, articles_collections.article_id
+FROM collections, articles
+WHERE collections.collection_id = articles_collections.collection_id AND articles.article_id = articles_collections.article_id;
+
+-- CREATE VIEW collectionsRecentChanges AS
+-- SELECT collections.collection_id, collections.title, collections.user_id, article_versions.article_id, article_versions.article_version_id
+-- FROM collections
+-- WHERE approved = 'false' AND auditor_id is NULL
+-- ORDER BY article_versions.created DESC
+-- LIMIT 10
+
+
