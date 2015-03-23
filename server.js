@@ -141,7 +141,6 @@ app.get('/article/:article_id', function (req, res) {
         for (var k = 0; k < sectionWithResourcesArray.length; k++){
            if (sectionWithResourcesArray[k]["section_id"] == results[i]["section_id"]){
              console.log("whoop found a match");
-             console.log(results[k]["resources"]);
              section["resources"] = sectionWithResourcesArray[k]["resources"];
              break;
            }
@@ -168,6 +167,7 @@ app.get('/article/:article_id', function (req, res) {
     else if (querytype == "article_view"){
       
       //populate article information from article_view
+      if (result.rows.length > 0){
         articleJSON["article_id"] = result.rows[0]["article_id"];
         articleJSON["created"] = result.rows[0]["created"];
         articleJSON["subject"] = result.rows[0]["subject"];
@@ -175,6 +175,7 @@ app.get('/article/:article_id', function (req, res) {
         articleJSON["user_name"] = result.rows[0]["user_name"];
 
         articleJSON["categories"] = categoriesArray;
+      }
     }
 
     if (completion == 3){
