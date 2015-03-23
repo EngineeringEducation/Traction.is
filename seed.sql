@@ -6,15 +6,16 @@ INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecra
 INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
 
+
+--inserting collections
+INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
+INSERT INTO collections (title, owner_id) VALUES ('OOP', 1);
+INSERT INTO collections (title, owner_id) VALUES ('Test Collection', 1);
+
 --inserting permissions
 INSERT INTO permissions (role, user_id) VALUES ('Mod', 1);
 INSERT INTO permissions (role, user_id) VALUES ('User', 2);
 INSERT INTO permissions (role, user_id) VALUES ('User', 3);
-
---inserting collections
-INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
-INSERT INTO collections (title, owner_id) VALUES ('OOP', 2);
-INSERT INTO collections (title, owner_id) VALUES ('Test Collection', 3);
 
 --inserting articles
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
@@ -38,11 +39,11 @@ INSERT INTO sections (article_id, title, body, category_id, sequence) values (2,
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (3, 'Intro to polymorph', 'Things can often times be more than one thing.', 3, 1);
 
 --inserting section/versions
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) values (1, 1, 'Ones who know binnary and ones who do not', 3, true);
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) values (2, 2, 'Some basics about the importance of inheritance and stuff', 2, false);
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) values (3, 3, 'Some examples about squares being rectangles or something like that', 1, true);
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) values (4, 1, 'Some examples about squares about fruits and vegetables', 2, false);
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, approved) VALUES (5, 2, 'Things can often times be more than one thing.', 1, true);
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) values (1, 1, 'Ones who know binnary and ones who do not', 3, 'Accepted');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) values (2, 2, 'Some basics about the importance of inheritance and stuff', 2, 'Rejected');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) values (3, 3, 'Some examples about squares being rectangles or something like that', 1, 'Accepted');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) values (4, 1, 'Some examples about squares about fruits and vegetables', 2, 'Rejected');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (5, 2, 'Things can often times be more than one thing.', 1, 'Accepted');
 
 --inserting resources
 INSERT INTO resources(section_id, title, owner_id, body) values (1, 'Who originally said this?', 3, 'Check this blog post about this silly joke.');
