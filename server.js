@@ -11,6 +11,9 @@ app.use(express.static(staticPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//telling express app to set the view engine to ejs
+app.set('view engine', 'ejs');
+
 // Connects to postgres once, on server start
 var conString = process.env['DATABASE_URL'];
 var db;
@@ -33,8 +36,9 @@ app.get("/collections/:collection_id", function(req, res) {
     if (err){
       res.status(500).send(err);
     } else {
-      // console.log(res);
-      res.send(results.rows);
+      // res.send(results.rows);
+      res.render('table', { 'collectionsView' : results.rows } )
+
     };
   });
 });
