@@ -6,6 +6,7 @@ INSERT INTO users (name, user_name, email) VALUES ('troy','troy', 'troy@tradecra
 INSERT INTO users (name, user_name, email) VALUES ('michael','michael', 'mowens@tradecrafted.com');
 INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafted.com');
 
+
 --inserting collections
 INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
 INSERT INTO collections (title, owner_id) VALUES ('OOP', 1);

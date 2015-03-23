@@ -1,4 +1,8 @@
-\c traction
+\c traction;
+CREATE VIEW collectionsView AS
+SELECT collections.collection_id, collections.title, articles.subject, users.user_name
+FROM collections, articles, articles_collections, users
+WHERE collections.collection_id = articles_collections.collection_id AND articles.article_id = articles_collections.article_id AND users.user_id = collections.owner_id;
 
 CREATE VIEW user_view AS
 	SELECT users.user_id, users.name, users.user_name, users.email, permissions.role
@@ -24,17 +28,6 @@ select s.section_id, s.article_id, r.resource_id, r.title as
 	resources r, users u where s.section_id = r.section_id and u.user_id = r.owner_id 
 	order by s.section_id, s.sequence;
 
-CREATE VIEW collectionsView AS
-SELECT collections.collection_id, collections.title, collections.user_id, articles_collections.article_id
-FROM collections, articles
-WHERE collections.collection_id = articles_collections.collection_id AND articles.article_id = articles_collections.article_id;
-
--- CREATE VIEW collectionsRecentChanges AS
--- SELECT collections.collection_id, collections.title, collections.user_id, article_versions.article_id, article_versions.article_version_id
--- FROM collections
--- WHERE approved = 'false' AND auditor_id is NULL
--- ORDER BY article_versions.created DESC
--- LIMIT 10
 
 -- #TODO should rename sections_view or section_view later, both are currently used
 
@@ -49,4 +42,3 @@ CREATE VIEW proposed_edits AS
 	SELECT users.user_name, secv.owner_id, secv.status, secv.body 
 	FROM section_versions secv, users
 	WHERE users.user_id = secv.owner_id AND status = 'Pending';
-

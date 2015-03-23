@@ -31,8 +31,6 @@ CREATE TABLE articles (
     subject text NOT NULL
 );
 
--- ^^ insert into articles (article_id, subject, owner_id) VALUES (1, 'blah blah', 1);
-
 CREATE TABLE articles_collections (
     article_id int references articles(article_id) NOT NULL,
     collection_id int references collections(collection_id) NOT NULL

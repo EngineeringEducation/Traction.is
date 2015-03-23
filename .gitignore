@@ -2,6 +2,7 @@
 .notes
 .DS_Store
 Procfile
+package.json
 
 /node_modules
 
