@@ -29,7 +29,29 @@ pg.connect(conString, function(err, client) {
 
 //---------- GET REQUESTS/ENDPOINTS -----------
 
+//GET /collections, returns all collections
+app.get("/collections", function(req, res) {
+  console.log(req.params.collection_id);
+  db.query("SELECT * FROM collectionsView", function (err, results) {
+    if (err){
+      //TODO: error handling % and special characters
+      res.status(500);
+      console.log(err);
 
+    } else if (results.rows.length == 0) {
+      console.log('empty rows')
+      res.status(404).send('Collection Not Found');
+    } else {
+      // res.send(results.rows);
+      console.log(results)
+      res.render('table', { 'collectionsView' : results.rows } )
+
+    };
+  });
+});
+
+//GET /collections/:collection_id
+//returns all articles within a collection, given the collection_id
 app.get("/collections/:collection_id", function(req, res) {
   console.log(req.params.collection_id);
   db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
