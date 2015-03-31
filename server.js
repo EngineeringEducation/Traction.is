@@ -215,6 +215,10 @@ app.get('/user/:user_name', function (req, res) {
   var userArticles;
   var completion = 0;
   var profileJSON = {};  
+  // if (req.accepts('html')) {
+  //   res.sendFile(__dirname + '/views/users.html');
+  //   return;
+  // }
 
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
