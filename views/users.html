@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.1/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>User Profile</h1>
+    <hr>
+    <div class="user"></div>
+  </div>
+
+<script id="user-info-template" type="text/x-handlebars-template">
+  {{user.name}}</br>
+  {{user.userName}}</br>
+  {{user.email}}
+</script>
+
+
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
+
+  <script>
+
+    //Define models
+
+    var User = Backbone.Model.extend({
+      defaults: {
+        name: '',
+        userName: '', 
+        email: ''
+      }
+    });
+
+    var Article = Backbone.Model.extend({
+      defaults: {
+        subject: '',
+        created: ''
+      }
+    });
+
+    var Section = Backbone.Model.extend({
+      defaults: {
+        title: '',
+        created: '',
+        approved: ''
+      }
+    });
+
+    var Pending = Backbone.Model.extend({
+      defaults: {
+        userName: '',
+        owner_id: '',
+        approved: false,
+        body: ''
+      }
+    }); 
+
+    //Define collections
+
+    var SectionCollection = Backbone.Collection.extend({
+      model: Section,
+      comparator: function(model) {
+        return model.get('created');
+      }
+    });
+
+    var PendingCollection = Backbone.Collection.extend({
+      model: Pending,
+      comparator: function(model) {
+        return model.get('userName');
+      }
+    });
+
+    //Define views
+
+    var UserView = Backbone.View.extend({
+      className: "user",
+      render: function() {
+        this.$el.html('');
+        var source = $("#user-info-template").html();
+        var template = Handlebars.compile(source);
+        var rendered = template({user: this.model.toJSON()});
+        this.$el.append(rendered);
+        return this;
+      }
+    });
+
+    var ArticleView = Backbone.View.extend({
+      className: 'article',
+      render: function() {
+        //do some stuff
+      }
+    });
+
+    var SectionView = Backbone.View.extend({
+      className: 'section',
+      initialize: function() {
+        this.listenTo(this.collection, 'add change remove', this.render);
+      },
+      render: function() {
+        //do some stuff
+      }
+    });
+
+    var PendingView = Backbone.View.extend({
+      className: 'pending',
+      render: function() {
+        //do some stuff
+      }
+    });
+
+  //instantiations
+
+    //models
+    var user = new User({
+      name: 'Troy',
+      userName: 'destroysultan', 
+      email: 'troysultan@gmail.com'
+    });
+
+    var article = new Article({
+      subject: 'Awesome Subject',
+      created: '2015-03-20T22:45:29.994Z'
+    });
+
+    var section = new Section({
+      title: 'More examples (section title)',
+      created: '2015-03-20T22:45:30.005Z',
+      approved: true
+    });
+
+    var section2 = new Section({
+      title: 'Even more examples (section title)',
+      created: '2015-03-20T23:55:50.005Z',
+      approved: false
+    });
+
+    var pending = new Pending({
+      userName: 'Troy',
+      owner_id: '1',
+      approved: false,
+      body: 'This is a pending article that has not yet been approved'
+    });
+
+    //collections
+    var sectionCollection = new SectionCollection([section, section2]);
+
+    var pendingCollection = new PendingCollection([pending]);
+
+    //views
+    var userView = new UserView({
+      model: user
+    });
+
+    var articleView = new ArticleView({
+      model: user
+    });
+
+    var sectionView = new SectionView({
+      collection: sectionCollection
+    });
+
+    var PendingView = new PendingView({
+      collection: pendingCollection
+    });
+
+    $(document).ready(function() {
+      $('body').append(userView.render().$el);
+    });
+
+  </script>
+</body>
+
+</html>
