@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="custom.css">
+	<title>yaaaaarrhhh</title>
+</head>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+	<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<body>
+<div class="container wrapper">
+          <div class="col-sm-2 " id="sidebar">
+                <ul class="nav" id="left-nav">
+                	<script id="sections-nav" type="text/x-handlebars-template">
+										
+										{{#each sections}}
+											<li><a href="#"> {{section_title}} </a></li>
+										{{/each}}
+									</script>
+                </ul>
+           </div>
+            
+           <div class="col-xs-12 col-sm-8" id="section-view">
+    
+						<script id="article-template" type="text/x-handlebars-template">
+							<h1>
+								{{article.subject}}
+							</h1>
+						</script>
+							<!-- The handlebars template for the rolodex view -->
+						<script id="sections-template" type="text/x-handlebars-template">
+								{{#each sections}}
+									<div class="section">
+										<h3>{{section_title}}</h3>
+										<p>{{section_body}}</p>
+									</div>
+								{{/each}}
+							</script>
+    			</div>
+    
+            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
+              <div class="well sidebar-nav">
+                <ul class="nav">
+                  <li>Right Sidebar</li>
+                  <li class="active"><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                  <li>Sidebar</li>
+                  <li><a href="#">Link</a></li>
+                  <li><a href="#">Link</a></li>
+                </ul>
+            </div><!--/span-->
+  </div>
+
+</body>
+
+	<script>
+
+  var JSONdata = {
+		article_id: 1,
+		created: "2015-03-23T17:55:19.000Z",
+		subject: "this is an article",
+		owner_id: 1,
+		user_name: "troy",
+		categories: [
+									{
+									category_id: 1,
+									category_title: "Basics",
+									sections: [
+															{
+															section_id: 1,
+															section_title: "There are 10 kinds of people in the world",
+															sequence: 1,
+															section_body: "Ones who know binary and ones who do not",
+															owner_id: 1,
+															created: "2015-03-23T17:55:19.009Z",
+															resources: [
+																						{
+																						owner_id: 3,
+																						user_name: "wen",
+																						created: "2015-03-23T17:55:19.013Z",
+																						resource_title: "Who originally said this?",
+																						resource_body: "Check this blog post about this silly joke."
+																						}
+																					]
+															}
+													]
+									}
+							]
+		};
+
+
+		var Article = Backbone.Model.extend({
+			defaults:{
+				subject: "Broken subject"
+			},
+			url: function(){
+				return 'http://localhost:3000/article/' + this.id;
+			}
+
+		});
+
+
+		var Category = Backbone.Model.extend({
+			defaults: {
+				title: "Broken category title"
+			}
+		});
+
+		Categories = Backbone.Collection.extend({
+			model: Category
+		});
+
+		var category = new Category();
+		var category2 = new Category({title: "Advanced"})
+
+	  var Section = Backbone.Model.extend({
+	  	defaults: {
+	    section_id : 1,
+	    created : new Date(),
+	    title : "Hey there",
+	    body : "Nice body text",
+	    owner_name : "wen", 
+	  	}
+	  });
+	  
+	  Sections = Backbone.Collection.extend({
+	  	model: Section
+	  });
+
+	  var Resource = Backbone.Model.extend({
+	  	defaults: {
+	  		title : "Wikipedia link",
+	  		body: "someurl.com/wiki/Something",
+	  		created: new Date()
+	  	}
+	  });
+
+	  Resources = Backbone.Collection.extend({
+	  	model: Resource
+	  });
+
+
+	  ///////// VIEWS /////////
+
+	  var ArticleView = Backbone.View.extend({
+	  	className: 'article',
+	  	render: function(){
+	  		console.log(this.model.user_name)
+	  		var template = Handlebars.compile($("#article-template").html());
+	  		var rendered = template({article: this.model.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	}
+	  });
+
+	  var SectionsView = Backbone.View.extend({
+	  	className: 'sections',
+	  	renderNav: function(){
+	  		var template = Handlebars.compile($('#sections-nav').html());
+	  		var rendered = template({sections: this.collection.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	},
+	  	renderText: function() {
+	  		var template = Handlebars.compile($('#sections-template').html());
+	  		var rendered = template({sections: this.collection.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	}
+	  });
+
+	  // function createModelsFromJSON(){
+	  	
+	  // }
+
+		// var article = new Article({
+		// 									subject: "sdfhldsf",
+		// 									user_name: "troy",
+		// 									id : 1]
+		// 							});
+
+
+		var categoryArray = JSONdata["categories"];
+		var categories = new Categories();
+		
+		categoryArray.forEach(function(category) {
+			// create a new category (model)
+			// initize with the category data
+			// attach a sections collection
+			 // loop through sections in the array (from the category json)
+
+
+
+			categories.add()
+		})
+
+		//hard code getting an array of sections from the first category for now
+		var sectionArray = categoryArray[0]["sections"];
+		var sections = new Sections();
+		console.log(sectionArray);
+		for (var i = 0; i < sectionArray.length; i++) {
+			var section = new Section({
+				section_id: sectionArray[i]["section_id"],
+				section_title: sectionArray[i]["section_title"],
+				section_body: sectionArray[i]["section_body"],
+				created: sectionArray[i]["created"]
+			});
+			console.log("we just went through this");
+			sections.add(section);
+		}
+
+	  // var section = new Section();
+	  // var section2 = new Section({section_id:2, created: new Date(), title : "Batman", body:"Neener neener neener.", owner_name:"bruce"});
+	 // var sections = new Sections([section, section2]);
+
+	 //http://stackoverflow.com/questions/7140741/backbone-js-model-with-collection
+
+
+	  var sectionsView = new SectionsView({collection: sections});
+	  var sectionsNavView = new SectionsView({collection: sections});
+
+
+
+	  $(document).ready(function() {
+	  	var article = new Article({id: 1});
+	    article.fetch({
+	    	success: function() {
+	    		  $('#section-view').append(articleView.render().el);
+				}
+			});
+
+	    console.log(article);
+	    var articleView = new ArticleView({model: article});
+
+	  	// 	success: function (){
+
+	  	// 	}
+	  	// });
+	  	//	var article = new Article({article_id : injected from node? });
+	  	$('#left-nav').append(sectionsNavView.renderNav().el);
+			$('#section-view').append(sectionsView.renderText().el);
+		});
+
+	</script>
+	</body>
+</html>

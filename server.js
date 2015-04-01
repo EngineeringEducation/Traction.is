@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var pg = require('pg');
 var app = express();
+var exphbs  = require('express-handlebars');
 
 var staticPath = path.resolve(__dirname, '/views');
 app.use(express.static(staticPath));
@@ -11,8 +12,8 @@ app.use(express.static(staticPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//telling express app to set the view engine to ejs
-app.set('view engine', 'ejs');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 // Connects to postgres once, on server start
 var conString = process.env['DATABASE_URL'];
@@ -53,6 +54,12 @@ app.get("/collections/:collection_id", function(req, res) {
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
+  var article_id = req.params.article_id; 
+  if (req.header('Content-Type') != "application/json"){
+    res.sendFile(__dirname + "/views/article.html");
+    return;
+  }
+  console.log("boop");
   db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], 
     function(err, result){callback('article_view', err, result)});
   db.query("SELECT * from resources_view WHERE article_id = $1", [req.params.article_id],
@@ -153,8 +160,8 @@ app.get('/article/:article_id', function (req, res) {
         var section = {};
 
         section["section_id"] = results[i]["section_id"];
-        section["sequence"] = results[i]["section_title"];
-        section["section_title"] = results[i]["sequence"];
+        section["sequence"] = results[i]["sequence"];
+        section["section_title"] = results[i]["section_title"];
         section["section_body"] = results[i]["section_body"];
         section["owner_id"] = results[i]["owner_id"];
         section["created"] = results[i]["created"];
