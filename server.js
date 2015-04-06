@@ -32,7 +32,7 @@ pg.connect(conString, function(err, client) {
 //GET /collections, returns all collections
 app.get("/collections", function(req, res) {
   console.log(req.params.collection_id);
-  db.query("SELECT * FROM collectionsView", function (err, results) {
+  db.query("SELECT title FROM collectionsView", function (err, results) {
     if (err){
       //TODO: error handling % and special characters
       res.status(500);
