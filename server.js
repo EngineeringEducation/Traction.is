@@ -195,7 +195,7 @@ app.get('/article/:article_id', function (req, res) {
     }
 
     else if (querytype == "article_view"){
-      
+
       //populate article information from article_view
       if (result.rows.length > 0){
         articleJSON["article_id"] = result.rows[0]["article_id"];

@@ -3,8 +3,8 @@
 <head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="custom.css">
-	<title>yaaaaarrhhh</title>
+	<link rel="stylesheet" href="/views/custom.css">
+	<title>yaaarrhhh</title>
 </head>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
@@ -97,21 +97,21 @@
 							]
 		};
 
-
-		var Article = Backbone.Model.extend({
-			defaults:{
-				subject: "Broken subject"
-			},
-			url: function(){
-				return 'http://localhost:3000/article/' + this.id;
-			}
-
-		});
-
+		var Section = Backbone.Model.extend({
+	  	defaults: {
+	    section_title : "broken title",
+	    section_body : "broken text",
+	  	}
+	  });
+	  
+	  Sections = Backbone.Collection.extend({
+	  	model: Section
+	  });
 
 		var Category = Backbone.Model.extend({
 			defaults: {
-				title: "Broken category title"
+				category_title: "Broken category title",
+				sections: new Sections()
 			}
 		});
 
@@ -119,22 +119,16 @@
 			model: Category
 		});
 
-		var category = new Category();
-		var category2 = new Category({title: "Advanced"})
+		var Article = Backbone.Model.extend({
+			defaults:{
+				subject: "Broken subject",
+				categories : new Categories()
+			},
+			url: function(){
+				return 'http://localhost:3000/article/' + this.id;
+			}
 
-	  var Section = Backbone.Model.extend({
-	  	defaults: {
-	    section_id : 1,
-	    created : new Date(),
-	    title : "Hey there",
-	    body : "Nice body text",
-	    owner_name : "wen", 
-	  	}
-	  });
-	  
-	  Sections = Backbone.Collection.extend({
-	  	model: Section
-	  });
+		});
 
 	  var Resource = Backbone.Model.extend({
 	  	defaults: {
@@ -154,13 +148,22 @@
 	  var ArticleView = Backbone.View.extend({
 	  	className: 'article',
 	  	render: function(){
-	  		console.log(this.model.user_name)
 	  		var template = Handlebars.compile($("#article-template").html());
 	  		var rendered = template({article: this.model.toJSON()});
 	  		$(this.el).append(rendered);
 	  		return this;
 	  	}
 	  });
+
+		var CategoryView = Backbone.View.extend({
+			className: 'category',
+			render: function(){
+				var title = this.model.get('category_title');
+				var newNode = $('<li>' + title + '</li>');
+				$(this.el).append(newNode);
+				return this;
+			}
+		});
 
 	  var SectionsView = Backbone.View.extend({
 	  	className: 'sections',
@@ -178,76 +181,56 @@
 	  	}
 	  });
 
-	  // function createModelsFromJSON(){
-	  	
-	  // }
-
-		// var article = new Article({
-		// 									subject: "sdfhldsf",
-		// 									user_name: "troy",
-		// 									id : 1]
-		// 							});
-
-
 		var categoryArray = JSONdata["categories"];
-		var categories = new Categories();
-		
-		categoryArray.forEach(function(category) {
-			// create a new category (model)
-			// initize with the category data
-			// attach a sections collection
-			 // loop through sections in the array (from the category json)
-
-
-
-			categories.add()
-		})
-
-		//hard code getting an array of sections from the first category for now
-		var sectionArray = categoryArray[0]["sections"];
-		var sections = new Sections();
-		console.log(sectionArray);
-		for (var i = 0; i < sectionArray.length; i++) {
-			var section = new Section({
-				section_id: sectionArray[i]["section_id"],
-				section_title: sectionArray[i]["section_title"],
-				section_body: sectionArray[i]["section_body"],
-				created: sectionArray[i]["created"]
-			});
-			console.log("we just went through this");
-			sections.add(section);
-		}
-
-	  // var section = new Section();
-	  // var section2 = new Section({section_id:2, created: new Date(), title : "Batman", body:"Neener neener neener.", owner_name:"bruce"});
-	 // var sections = new Sections([section, section2]);
-
-	 //http://stackoverflow.com/questions/7140741/backbone-js-model-with-collection
-
-
-	  var sectionsView = new SectionsView({collection: sections});
-	  var sectionsNavView = new SectionsView({collection: sections});
-
 
 
 	  $(document).ready(function() {
 	  	var article = new Article({id: 1});
+	  	var articleView = new ArticleView({model: article});
+
 	    article.fetch({
 	    	success: function() {
+	    			//much success such code wow
+	    			var categoryArray = article.get("categories");
+					
+						for (var i = 0; i < categoryArray.length; i++){
+							var category = new Category({
+							  category_id : categoryArray[i]["category_id"],
+								category_title: categoryArray[i]["category_title"],
+								sections: categoryArray[i]["sections"]
+							});
+
+							var categoryView = new CategoryView({model: category});
+							$('#left-nav').append(categoryView.render().el);
+
+							var sectionArray = category.get("sections");
+							var sectionCollection = new Sections();
+
+							for (var k = 0; k < sectionArray.length; k++){
+								var section = new Section({
+									section_id : sectionArray[k]["section_id"],
+									created : sectionArray[k]["created"],
+									section_title : sectionArray[k]["section_title"],
+									section_body : sectionArray[k]["section_body"],
+									owner_id : sectionArray[k]["owner_id"]
+								});
+								console.log(section);
+								sectionCollection.add(section);
+							}
+							console.log(sectionCollection);
+
+						var sectionsView = new SectionsView({collection: sectionCollection});
+						var sectionsNavView = new SectionsView({collection: sectionCollection});
+
 	    		  $('#section-view').append(articleView.render().el);
+	    		  $('#left-nav').append(sectionsNavView.renderNav().el);
+						$('#section-view').append(sectionsView.renderText().el);
+
+						}
+
 				}
 			});
 
-	    console.log(article);
-	    var articleView = new ArticleView({model: article});
-
-	  	// 	success: function (){
-
-	  	// 	}
-	  	// });
-	  	//	var article = new Article({article_id : injected from node? });
-	  	$('#left-nav').append(sectionsNavView.renderNav().el);
-			$('#section-view').append(sectionsView.renderText().el);
 		});
 
 	</script>
