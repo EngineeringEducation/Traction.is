@@ -30,7 +30,29 @@ pg.connect(conString, function(err, client) {
 
 //---------- GET REQUESTS/ENDPOINTS -----------
 
+//GET /collections, returns all collections
+app.get("/collections", function(req, res) {
+  console.log(req.params.collection_id);
+  db.query("SELECT title FROM collectionsView", function (err, results) {
+    if (err){
+      //TODO: error handling % and special characters
+      res.status(500);
+      console.log(err);
 
+    } else if (results.rows.length == 0) {
+      console.log('empty rows')
+      res.status(404).send('Collection Not Found');
+    } else {
+      // res.send(results.rows);
+      console.log(results)
+      res.render('table', { 'collectionsView' : results.rows } )
+
+    };
+  });
+});
+
+//GET /collections/:collection_id
+//returns all articles within a collection, given the collection_id
 app.get("/collections/:collection_id", function(req, res) {
   console.log(req.params.collection_id);
   db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
@@ -221,52 +243,59 @@ app.get('/user/:user_name', function (req, res) {
   var user;
   var userArticles;
   var completion = 0;
-  var profileJSON = {};
+  var profileJSON = {};  
 
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
+      console.log('error');
       res.status(500).send(err);
       console.log(err);
     } else {
-      user = result.rows[0];
-      console.log(user);
-      profileJSON['userInfo'] = user;
+      if (result.rows.length > 0) {
+        console.log(result.rows);
+        user = result.rows[0];
+        console.log(user);
+        profileJSON['userInfo'] = user;
 
-      db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
-        if (err) {
-          res.status(500).send(err);
-          console.log(err);
-        } else {
-          userArticles = result.rows;
-          profileJSON['articleInfo'] = userArticles;
+        db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
+          if (err) {
+            res.status(500).send(err);
+            console.log(err);
+          } else {
+            userArticles = result.rows;
+            profileJSON['articleInfo'] = userArticles;
 
-          db.query("SELECT title, created, status FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
-            if (err) {
-              res.status(500).send(err);
-              console.log(err);
-            } else {
-              userSections = result.rows;
-              profileJSON['sectionInfo'] = userSections;
+            db.query("SELECT title, created, approved FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+              if (err) {
+                res.status(500).send(err);
+                console.log(err);
+              } else {
+                userSections = result.rows;
+                profileJSON['sectionInfo'] = userSections;
 
-              db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
-                if (err) {
-                  res.status(500).send(err);
-                  console.log(err);
-                } else {
+                db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                  if (err) {
+                    res.status(500).send(err);
+                    console.log(err);
+                  } else {
 
-                  if (user.role == 'Mod' || user.role == 'Admin') {
-                    pendingReviewsForUser = result.rows;
-                    profileJSON['pendingInfo'] = pendingReviewsForUser;
-                  }  
-                  
-                  res.send(profileJSON);
-                }                
-              });
-            }
-          });
-        }
-      });
-    }
+                    if (user.role == 'Mod' || user.role == 'Admin') {
+                      pendingReviewsForUser = result.rows;
+                      profileJSON['pendingInfo'] = pendingReviewsForUser;
+                    }  
+                    
+                    res.send(profileJSON);
+                  }                
+                });
+              }
+            });
+          }
+        });
+      } else {
+        console.log('user not found' + ' ' + req.params.user_name);
+        res.status(404).send('username not found :(');
+      }
+    } 
   });
 });
   

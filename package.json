@@ -1,10 +1,11 @@
 {
-  "name": "proj3",
+  "name": "Traction.is",
   "version": "1.0.0",
-  "description": "TC Eng Proj3",
+  "description": "Traction.is",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,14 @@
     "mongoose": "~3.6.13",
     "morgan": "~1.0.0",
     "pg": "^4.2.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenever/Traction.is.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wenever/Traction.is/issues"
+  },
+  "homepage": "https://github.com/wenever/Traction.is"
 }
