@@ -3,7 +3,7 @@
 <head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/views/custom.css">
+	<link rel="stylesheet" href="/custom.css">
 	<title>yaaarrhhh</title>
 </head>
 
@@ -11,6 +11,7 @@
 	<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
 	<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script type="text/javascript" src="/js/model.js"></script>
 
 <body>
 <div class="container wrapper">
@@ -102,9 +103,6 @@
 	  	}
 	  });
 
-		var categoryArray = JSONdata["categories"];
-
-
 	  $(document).ready(function() {
 	  	var article = new Article({id: 1});
 	  	var articleView = new ArticleView({model: article});
@@ -125,7 +123,7 @@
 							$('#left-nav').append(categoryView.render().el);
 
 							var sectionArray = category.get("sections");
-							var sectionCollection = new Sections();
+							var sectionCollection = new SectionCollection();
 
 							for (var k = 0; k < sectionArray.length; k++){
 								var section = new Section({
@@ -135,10 +133,8 @@
 									section_body : sectionArray[k]["section_body"],
 									owner_id : sectionArray[k]["owner_id"]
 								});
-								console.log(section);
 								sectionCollection.add(section);
 							}
-							console.log(sectionCollection);
 
 						var sectionsView = new SectionsView({collection: sectionCollection});
 						var sectionsNavView = new SectionsView({collection: sectionCollection});

@@ -5,7 +5,7 @@ var pg = require('pg');
 var app = express();
 var exphbs  = require('express-handlebars');
 
-var staticPath = path.resolve(__dirname, '/views');
+var staticPath = path.join(__dirname, 'static');
 app.use(express.static(staticPath));
 
 // allows us to parse the incoming request body
