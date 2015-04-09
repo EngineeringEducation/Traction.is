@@ -6,12 +6,10 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 
-<body>
   <div class="container">
     <div class="page-header">
       <h1>Traction.io <small>Curated educational content for everyone</small></h1>
     </div>
-
     <div class="row">
       <div class="col-xs-6 col-md-3">
         <a href="#" class="thumbnail" style="width: 220px; height: 220px;"}>
@@ -55,9 +53,16 @@
 
   <!-- template scripts -->
   <!-- Basic user info template -->
-  <script id="user-profile-template" type="text/x-handlebars-template"><h1>{{user.name}} <br /><small>{{user.userName}}<br /> {{user.email}}</small></h1></script>
+  <script id="user-profile-template" type="text/x-handlebars-template">
+    <h1>{{user.name}} <br /><small>{{user.userName}}<br /> {{user.email}}</small></h1>
+  </script>
   <!-- User articles template -->
-  <script id="article-info-template" type="text/x-handlebars-template"><p><u>{{article.subject}}</u> {{article.created}}</p></script>
+  <script id="article-info-template" type="text/x-handlebars-template">
+    {{#each articleCollection}}
+      <p><u>{{subject}}</u>, {{created}}</p>
+    {{/each}}
+  </script>
+
   <!-- Collection templates -->
   <!-- Edits published by user template -->
   <script id="section-info-template" type="text/x-handlebars-template">
@@ -68,7 +73,7 @@
   <!-- Edits awaiting user to approve -->
   <script id="pending-info-template" type="text/x-handlebars-template">
     {{#each pendingCollection}}
-      <p>Edit suggested by <b>{{userName}}:</b> {{body}}</p>
+      <p><u>Edit suggested by <b>{{userName}}:</b></u> {{body}}</p>
     {{/each}}
   </script>
   <!-- Dependency scripts -->
@@ -94,6 +99,9 @@
         subject: '',
         created: ''
       }
+      // url: function(){
+      //   return 'http://localhost:3000/article/' + this.id;
+      // }
     });
 
     var Section = Backbone.Model.extend({
@@ -114,6 +122,13 @@
     }); 
 
     //Define collections
+
+    var ArticleCollection = Backbone.Collection.extend({
+      model: Article,
+      comparator: function(model) {
+        return model.get('created');
+      }
+    });
 
     var SectionCollection = Backbone.Collection.extend({
       model: Section,
@@ -144,12 +159,15 @@
     });
 
     var ArticleView = Backbone.View.extend({
-      className: "article",
+      className: 'article',
+      initialize: function() {
+        this.listenTo(this.collection, 'add change remove', this.render);
+      },
       render: function() {
         this.$el.html('');
         var source = $("#article-info-template").html();
         var template = Handlebars.compile(source);
-        var rendered = template({article: this.model.toJSON()});
+        var rendered = template({articleCollection: this.collection.toJSON()});
         this.$el.append(rendered);
         return this;
       }
@@ -199,6 +217,11 @@
       created: '2015-03-20T22:45:29.994Z'
     });
 
+    var article2 = new Article({
+      subject: 'Awesome Subject numba 2',
+      created: '2015-03-20T22:45:35.994Z'
+    });
+
     var section = new Section({
       title: 'More examples (section title)',
       created: '2015-03-20T22:45:30.005Z',
@@ -215,10 +238,12 @@
       userName: 'Wen',
       owner_id: '1',
       approved: false,
-      body: 'I disagree with this point: wireframing is meant to be..'
+      body: 'I disagree with this point- wireframing is meant to be most..'
     });
 
     //collections
+    var articleCollection = new ArticleCollection([article, article2]);
+
     var sectionCollection = new SectionCollection([section, section2]);
 
     var pendingCollection = new PendingCollection([pending]);
@@ -229,7 +254,7 @@
     });
 
     var articleView = new ArticleView({
-      model: article
+      collection: articleCollection
     });
 
     var sectionView = new SectionView({
