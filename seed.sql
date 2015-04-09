@@ -19,8 +19,9 @@ INSERT INTO permissions (role, user_id) VALUES ('User', 3);
 
 --inserting articles
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
-INSERT INTO articles (owner_id, subject) VALUES (2, 'this is another subject');
-INSERT INTO articles (owner_id, subject) VALUES (3, 'and this is also a subject. wudduya know.');
+INSERT INTO articles (owner_id, subject) VALUES (1, 'this is another subject');
+INSERT INTO articles (owner_id, subject) VALUES (2, 'Blah blah subject');
+INSERT INTO articles (owner_id, subject) VALUES (3, 'Blah blah another subject');
 
 --inserting articles/collections
 INSERT INTO articles_collections (article_id, collection_id) VALUES (1,1);

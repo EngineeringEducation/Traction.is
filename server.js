@@ -240,7 +240,7 @@ app.get('/user/:user_name', function (req, res) {
             userArticles = result.rows;
             profileJSON['articleInfo'] = userArticles;
 
-            db.query("SELECT title, created, approved FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+            db.query("SELECT title, created, status FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
               if (err) {
                 res.status(500).send(err);
                 console.log(err);
