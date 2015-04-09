@@ -14,54 +14,57 @@
 	<script type="text/javascript" src="/js/model.js"></script>
 
 <body>
-<div class="container wrapper">
-          <div class="col-sm-2 " id="sidebar">
-                <ul class="nav" id="left-nav">
-                	<script id="sections-nav" type="text/x-handlebars-template">
-										
-										{{#each sections}}
-											<li><a href="#"> {{section_title}} </a></li>
-										{{/each}}
-									</script>
-                </ul>
-           </div>
-            
-           <div class="col-xs-12 col-sm-8" id="section-view">
-    
-						<script id="article-template" type="text/x-handlebars-template">
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                    </a>
+                </li>
+            	<script id="sections-nav" type="text/x-handlebars-template">
+					
+					{{#each sections}}
+						<li><a href="#"> {{section_title}} </a></li>
+					{{/each}}
+				</script>
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" id="article-content">
+
+                        <script id="article-template" type="text/x-handlebars-template">
 							<h1>
 								{{article.subject}}
 							</h1>
 						</script>
-							<!-- The handlebars template for the rolodex view -->
-						<script id="sections-template" type="text/x-handlebars-template">
-								{{#each sections}}
-									<div class="section">
-										<h3>{{section_title}}</h3>
-										<p>{{section_body}}</p>
-									</div>
-								{{/each}}
-							</script>
-    			</div>
-    
-            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
-              <div class="well sidebar-nav">
-                <ul class="nav">
-                  <li>Right Sidebar</li>
-                  <li class="active"><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li>Sidebar</li>
-                  <li><a href="#">Link</a></li>
-                  <li><a href="#">Link</a></li>
-                </ul>
-            </div><!--/span-->
-  </div>
 
-</body>
+						<script id="sections-template" type="text/x-handlebars-template">
+							{{#each sections}}
+								<div class="section">
+									<h3>{{section_title}}</h3>
+									<p>{{section_body}}</p>
+								</div>
+							{{/each}}
+						</script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
 
 	<script>
 
@@ -112,43 +115,43 @@
 	    			//much success such code wow
 	    			var categoryArray = article.get("categories");
 					
-						for (var i = 0; i < categoryArray.length; i++){
-							var category = new Category({
-							  category_id : categoryArray[i]["category_id"],
-								category_title: categoryArray[i]["category_title"],
-								sections: categoryArray[i]["sections"]
+					for (var i = 0; i < categoryArray.length; i++){
+						var category = new Category({
+						  category_id : categoryArray[i]["category_id"],
+							category_title: categoryArray[i]["category_title"],
+							sections: categoryArray[i]["sections"]
+						});
+
+						var categoryView = new CategoryView({model: category});
+						$('#sidebar-nav').append(categoryView.render().el);
+
+						var sectionArray = category.get("sections");
+						var sectionCollection = new SectionCollection();
+
+						for (var k = 0; k < sectionArray.length; k++){
+							var section = new Section({
+								section_id : sectionArray[k]["section_id"],
+								created : sectionArray[k]["created"],
+								section_title : sectionArray[k]["section_title"],
+								section_body : sectionArray[k]["section_body"],
+								owner_id : sectionArray[k]["owner_id"]
 							});
-
-							var categoryView = new CategoryView({model: category});
-							$('#left-nav').append(categoryView.render().el);
-
-							var sectionArray = category.get("sections");
-							var sectionCollection = new SectionCollection();
-
-							for (var k = 0; k < sectionArray.length; k++){
-								var section = new Section({
-									section_id : sectionArray[k]["section_id"],
-									created : sectionArray[k]["created"],
-									section_title : sectionArray[k]["section_title"],
-									section_body : sectionArray[k]["section_body"],
-									owner_id : sectionArray[k]["owner_id"]
-								});
-								sectionCollection.add(section);
-							}
+							sectionCollection.add(section);
+						}
 
 						var sectionsView = new SectionsView({collection: sectionCollection});
 						var sectionsNavView = new SectionsView({collection: sectionCollection});
 
-	    		  $('#section-view').append(articleView.render().el);
-	    		  $('#left-nav').append(sectionsNavView.renderNav().el);
-						$('#section-view').append(sectionsView.renderText().el);
+			    		$('#article-content').append(articleView.render().el);
+			    		$('#sidebar-nav').append(sectionsNavView.renderNav().el);
+						$('#article-content').append(sectionsView.renderText().el);
 
-						}
+					}
 
-				}
-			});
-
+			}
 		});
+
+	});
 
 	</script>
 	</body>
