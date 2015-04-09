@@ -74,7 +74,7 @@
   <!-- Edits awaiting user to approve -->
   <script id="pending-info-template" type="text/x-handlebars-template">
     {{#each pendingCollection}}
-      <p>Edit suggested by <b>{{userName}}:</b> {{body}}</p>
+      <p><u>Edit suggested by <b>{{userName}}:</b></u> {{body}}</p>
     {{/each}}
   </script>
   <!-- Dependency scripts -->
@@ -100,7 +100,9 @@
         subject: '',
         created: ''
       }
-      
+      // url: function(){
+      //   return 'http://localhost:3000/article/' + this.id;
+      // }
     });
 
     var Section = Backbone.Model.extend({
