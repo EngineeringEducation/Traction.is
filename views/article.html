@@ -25,7 +25,6 @@
                     </a>
                 </li>
             	<script id="sections-nav" type="text/x-handlebars-template">
-					
 					{{#each sections}}
 						<li><a href="#"> {{section_title}} </a></li>
 					{{/each}}
@@ -84,7 +83,7 @@
 			className: 'category',
 			render: function(){
 				var title = this.model.get('category_title');
-				var newNode = $('<li>' + title + '</li>');
+				var newNode = $('<li class="sidebar-brand">' + title + '</li>');
 				$(this.el).append(newNode);
 				return this;
 			}
@@ -107,7 +106,8 @@
 	  });
 
 	  $(document).ready(function() {
-	  	var article = new Article({id: 1});
+	  	var article_id = location["pathname"].replace("/article/", "");
+	  	var article = new Article({id: article_id});
 	  	var articleView = new ArticleView({model: article});
 
 	    article.fetch({
@@ -117,7 +117,7 @@
 					
 					for (var i = 0; i < categoryArray.length; i++){
 						var category = new Category({
-						  category_id : categoryArray[i]["category_id"],
+						  	category_id : categoryArray[i]["category_id"],
 							category_title: categoryArray[i]["category_title"],
 							sections: categoryArray[i]["sections"]
 						});
@@ -141,7 +141,7 @@
 
 						var sectionsView = new SectionsView({collection: sectionCollection});
 						var sectionsNavView = new SectionsView({collection: sectionCollection});
-
+						console.log(sectionsNavView);
 			    		$('#article-content').append(articleView.render().el);
 			    		$('#sidebar-nav').append(sectionsNavView.renderNav().el);
 						$('#article-content').append(sectionsView.renderText().el);
