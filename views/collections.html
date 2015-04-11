@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/custom.css">
+    <title>yaaarrhhh</title>
+</head>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+    <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+    <script type="text/javascript" src="../static/js/model.js"></script>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+       
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" id="article-content">
+
+                        <script id="CollectionCollection-template" type="text/x-handlebars-template">
+                            <div>
+                                {{#each collectionCollection}}
+                                <div class="section">
+                                    {{title}}
+                                </div>
+                                {{/each}}
+                            </div>
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+
+    <script>
+
+        var CollectionCollectionView = Backbone.View.extend({
+            className: 'collections',
+           
+
+            render: function(){
+            var source = $("#CollectionCollection-template").html();
+                console.log("printing source" + source);
+            var template = Handlebars.compile(source);
+            // console.log(template);
+            var rendered = template({collectionCollection: this.collection.toJSON()});
+            console.log("printing rendered" + rendered);
+            console.log("this.$el=" + $(this.el));
+            
+            $(this.el).append(rendered);
+
+            return this;
+            }
+        });
+
+      var collectionCollection = new CollectionCollection(
+                        [{"title":"Engineering"},
+                        {"title":"Growth"},
+                        {"title":"Product Design"},
+                        {"title":"Sales & Business Development"}]);
+      
+      var collectionCollectionView = new CollectionCollectionView({
+        collection: collectionCollection
+      });
+      // console.log(collectionCollection);
+
+      // console.log(collectionCollectionView.render().$el)
+
+      $(document).ready(function() {
+            // console.log("inside document ready to be appended=" + collectionCollectionView.render().el)
+            $('body').append(collectionCollectionView.render().el);
+      });
+
+
+
+    </script>
+
+    </body>
+</html>
