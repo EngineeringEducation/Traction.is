@@ -42,30 +42,16 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-8" id="section-content">
-
-						<script id="sections-template" type="text/x-handlebars-template">
-							{{#each sections}}
-								<div class="section">
-									<h3>{{section_title}}</h3>
-									<p>{{section_body}}</p>
-								</div>
-							{{/each}}
-						</script>
-
-                    </div>
-                    <div class="col-md-4" id="resources-content">
+                <div class="row" id="section-content">
 						<script id="resources-template" type="text/x-handlebars-template">
 							{{#each resources}}
-								<div class="resource">
+								<div class="col-md-4 resources">
 									<h5>{{title}}</h2>
 									<p>{{body}}</p>
 								</div>
 							{{/each}}
 						</script>
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -97,6 +83,24 @@
 			}
 		});
 
+		var SectionView = Backbone.View.extend({
+			className: 'section',
+			render: function(){
+				var title = this.model.get('section_title');
+				var body = this.model.get('section_body');
+				var newNode = $('<div class = "col-md-8"> <h3>' + title + '</h3><p>' + body + '</p></div>');
+				$(this.el).append(newNode);
+				return this;
+			},
+			renderEmptyResource: function(){
+				var title = this.model.get('section_title');
+				var body = this.model.get('section_body');
+				var newNode = $('<div class = "col-md-12"> <h3>' + title + '</h3><p>' + body + '</p></div>');
+				$(this.el).append(newNode);
+				return this;
+			}
+		});
+
 		var SectionsView = Backbone.View.extend({
 		  	className: 'sections',
 		  	renderNav: function(){
@@ -104,13 +108,14 @@
 		  		var rendered = template({sections: this.collection.toJSON()});
 		  		$(this.el).append(rendered);
 		  		return this;
-		  	},
-		  	renderText: function() {
-		  		var template = Handlebars.compile($('#sections-template').html());
-		  		var rendered = template({sections: this.collection.toJSON()});
-		  		$(this.el).append(rendered);
-		  		return this;
 		  	}
+		  	// ,
+		  	// renderText: function() {
+		  	// 	var template = Handlebars.compile($('#sections-template').html());
+		  	// 	var rendered = template({sections: this.collection.toJSON()});
+		  	// 	$(this.el).append(rendered);
+		  	// 	return this;
+		  	// }
 		});
 
 		var ResourcesView = Backbone.View.extend({
@@ -162,6 +167,8 @@
 							sectionCollection.add(section);
 
 							var resourceArray = section.get("resources");
+							var sectionView = new SectionView({model: section});
+
 							if (resourceArray) {
 							
 								var resourceCollection = new ResourceCollection();
@@ -176,13 +183,17 @@
 								}
 
 								var resourcesView = new ResourcesView({collection: resourceCollection});
-								$('#resources-content').append(resourcesView.render().el);
+
+								//chain appending section then resources
+								$('#section-content').append(sectionView.render().el).append(resourcesView.render().el);
+
 							}
+
+							//section has no resources, use 12 col section
 							else{
+								$('#section-content').append(sectionView.renderEmptyResource().el);
 
-								
 							}
-
 
 						}
 
@@ -190,7 +201,6 @@
 						var sectionsNavView = new SectionsView({collection: sectionCollection});
 			    		$('.sidebar-nav').append(sectionsNavView.renderNav().el);
 			    		$('.sidebar-nav').append('<br>');
-						$('#section-content').append(sectionsView.renderText().el);
 
 					}
 
