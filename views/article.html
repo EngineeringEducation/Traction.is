@@ -32,24 +32,35 @@
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
-
+        <div class="container-fluid" id="article-content">
+            <script id="article-template" type="text/x-handlebars-template">
+				<h1>
+					{{article.subject}}
+				</h1>
+			</script>
+        </div>
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12" id="article-content">
-
-                        <script id="article-template" type="text/x-handlebars-template">
-							<h1>
-								{{article.subject}}
-							</h1>
-						</script>
+                    <div class="col-md-8" id="section-content">
 
 						<script id="sections-template" type="text/x-handlebars-template">
 							{{#each sections}}
 								<div class="section">
 									<h3>{{section_title}}</h3>
 									<p>{{section_body}}</p>
+								</div>
+							{{/each}}
+						</script>
+
+                    </div>
+                    <div class="col-md-4" id="resources-content">
+						<script id="resources-template" type="text/x-handlebars-template">
+							{{#each resources}}
+								<div class="resource">
+									<h5>{{title}}</h2>
+									<p>{{body}}</p>
 								</div>
 							{{/each}}
 						</script>
@@ -66,15 +77,15 @@
 
 	  ///////// VIEWS /////////
 
-	  var ArticleView = Backbone.View.extend({
-	  	className: 'article',
-	  	render: function(){
-	  		var template = Handlebars.compile($("#article-template").html());
-	  		var rendered = template({article: this.model.toJSON()});
-	  		$(this.el).append(rendered);
-	  		return this;
-	  	}
-	  });
+		var ArticleView = Backbone.View.extend({
+		  	className: 'article',
+		  	render: function(){
+		  		var template = Handlebars.compile($("#article-template").html());
+		  		var rendered = template({article: this.model.toJSON()});
+		  		$(this.el).append(rendered);
+		  		return this;
+		  	}
+		});
 
 		var CategoryView = Backbone.View.extend({
 			className: 'category',
@@ -86,29 +97,41 @@
 			}
 		});
 
-	  var SectionsView = Backbone.View.extend({
-	  	className: 'sections',
-	  	renderNav: function(){
-	  		var template = Handlebars.compile($('#sections-nav').html());
-	  		var rendered = template({sections: this.collection.toJSON()});
-	  		$(this.el).append(rendered);
-	  		return this;
-	  	},
-	  	renderText: function() {
-	  		var template = Handlebars.compile($('#sections-template').html());
-	  		var rendered = template({sections: this.collection.toJSON()});
-	  		$(this.el).append(rendered);
-	  		return this;
-	  	}
-	  });
+		var SectionsView = Backbone.View.extend({
+		  	className: 'sections',
+		  	renderNav: function(){
+		  		var template = Handlebars.compile($('#sections-nav').html());
+		  		var rendered = template({sections: this.collection.toJSON()});
+		  		$(this.el).append(rendered);
+		  		return this;
+		  	},
+		  	renderText: function() {
+		  		var template = Handlebars.compile($('#sections-template').html());
+		  		var rendered = template({sections: this.collection.toJSON()});
+		  		$(this.el).append(rendered);
+		  		return this;
+		  	}
+		});
 
-	  $(document).ready(function() {
-	  	var article_id = location["pathname"].replace("/article/", "");
-	  	var article = new Article({id: article_id});
-	  	var articleView = new ArticleView({model: article});
+		var ResourcesView = Backbone.View.extend({
+			className: 'resources',
+			render: function(){
+		  		var template = Handlebars.compile($('#resources-template').html());
+		  		var rendered = template({resources: this.collection.toJSON()});
+		  		$(this.el).append(rendered);
+		  		return this;
+		  	}
+		});
 
-	    article.fetch({
-	    	success: function() {
+		////DOC READY CODE //////////////
+
+		$(document).ready(function() {
+		  	var article_id = location["pathname"].replace("/article/", "");
+		  	var article = new Article({id: article_id});
+		  	var articleView = new ArticleView({model: article});
+
+		    article.fetch({
+		    	success: function() {
 	    			//much success such code wow
 	    			$('#article-content').append(articleView.render().el);
 
@@ -133,24 +156,48 @@
 								created : sectionArray[k]["created"],
 								section_title : sectionArray[k]["section_title"],
 								section_body : sectionArray[k]["section_body"],
-								owner_id : sectionArray[k]["owner_id"]
+								owner_id : sectionArray[k]["owner_id"],
+								resources : sectionArray[k]["resources"]
 							});
 							sectionCollection.add(section);
+
+							var resourceArray = section.get("resources");
+							if (resourceArray) {
+							
+								var resourceCollection = new ResourceCollection();
+
+								for (var j = 0; j < resourceArray.length; j++){
+									var resource = new Resource({
+										title : resourceArray[j]["resource_title"],
+										body : resourceArray[j]["resource_body"],
+										user_name : resourceArray[j]["user_name"]
+									});
+									resourceCollection.add(resource);
+								}
+
+								var resourcesView = new ResourcesView({collection: resourceCollection});
+								$('#resources-content').append(resourcesView.render().el);
+							}
+							else{
+
+								
+							}
+
+
 						}
 
 						var sectionsView = new SectionsView({collection: sectionCollection});
 						var sectionsNavView = new SectionsView({collection: sectionCollection});
-						console.log(sectionsNavView);
 			    		$('.sidebar-nav').append(sectionsNavView.renderNav().el);
 			    		$('.sidebar-nav').append('<br>');
-						$('#article-content').append(sectionsView.renderText().el);
+						$('#section-content').append(sectionsView.renderText().el);
 
 					}
 
-			}
-		});
+				}
+			});
 
-	});
+		});
 
 	</script>
 	</body>
