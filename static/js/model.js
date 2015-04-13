@@ -51,7 +51,7 @@
         categories : new CategoryCollection()
       },
       url: function(){
-        return 'http://localhost:3000/article/' + this.id;
+        return '/article/' + this.id;
       }
 
     });
