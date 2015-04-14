@@ -15,12 +15,21 @@ SELECT a.article_id, a.created, a.subject, a.owner_id, u.user_name
 	WHERE a.owner_id = u.user_id;
 
 CREATE VIEW sections_view as
-select c.category_id, c.article_id, c.title as category_title, 
-	s.section_id as section_id, s.sequence, s.title as section_title, 
+select 
+	s.article_id as article_id, s.section_id as section_id, s.sequence, s.title as section_title, 
 	sv.body as section_body, sv.owner_id, sv.created 
-	from categories c, 
-	sections s, section_versions sv where c.category_id = s.category_id and 
+	from articles a,
+	sections s, section_versions sv where a.article_id = s.article_id and
 	s.section_id = sv.section_id and sv.status = 'Accepted' order by s.sequence;
+
+------removing category as a concept for right now ----------
+-- CREATE VIEW sections_view as
+-- select c.category_id, c.article_id, c.title as category_title, 
+-- 	s.section_id as section_id, s.sequence, s.title as section_title, 
+-- 	sv.body as section_body, sv.owner_id, sv.created 
+-- 	from categories c, 
+-- 	sections s, section_versions sv where c.category_id = s.category_id and 
+-- 	s.section_id = sv.section_id and sv.status = 'Accepted' order by s.sequence;
 
 CREATE VIEW resources_view as
 select s.section_id, s.article_id, r.resource_id, r.title as 

@@ -30,7 +30,7 @@ INSERT INTO articles_collections (article_id, collection_id) VALUES (2,2);
 INSERT INTO articles_collections (article_id, collection_id) VALUES (3,3);
 INSERT INTO articles_collections (article_id, collection_id) VALUES (4,4);
 
---inserting categories
+--inserting categories (currently not being used fully, see commented out code)
 INSERT INTO categories (article_id, sequence, title) VALUES (1, 1, 'Basics');
 INSERT INTO categories (article_id, sequence, title) VALUES (2, 2, 'Intro');
 INSERT INTO categories (article_id, sequence, title) VALUES (3, 3, 'What is it?');
@@ -45,7 +45,7 @@ INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (3,
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (1, 'Sketching', 'Doodle doodle doodle', 4, 1);
 
 --inserting section/versions
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (1, 1, 'Ones who know binnary and ones who do not', 3, 'Accepted');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (1, 1, 'Lorem ipsum dolor sit amet, ', 3, 'Accepted');
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (2, 2, 'Some basics about the importance of inheritance and stuff', 2, 'Rejected');
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (3, 3, 'Some examples about squares being rectangles or something like that', 1, 'Accepted');
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (4, 1, 'Some examples about squares about fruits and vegetables', 2, 'Rejected');
