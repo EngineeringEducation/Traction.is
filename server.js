@@ -32,8 +32,15 @@ pg.connect(conString, function(err, client) {
 
 //GET /collections, returns all collections
 app.get("/collections", function(req, res) {
-  console.log(req.params.collection_id);
-  db.query("SELECT title FROM collectionsView", function (err, results) {
+  
+  //checks if client is asking server for endpoint
+  if (req.header('Content-Type') != "application/json"){
+    //renders collections.html
+    res.sendFile(__dirname + "/views/collections.html");
+    return;
+  }
+
+  db.query("SELECT title, collection_id FROM collections", function (err, results) {
     if (err){
       //TODO: error handling % and special characters
       res.status(500);
@@ -45,7 +52,7 @@ app.get("/collections", function(req, res) {
     } else {
       // res.send(results.rows);
       console.log(results)
-      res.render('table', { 'collectionsView' : results.rows } )
+      res.send(results.rows);
 
     };
   });
@@ -55,8 +62,16 @@ app.get("/collections", function(req, res) {
 //returns all articles within a collection, given the collection_id
 app.get("/collections/:collection_id", function(req, res) {
   console.log(req.params.collection_id);
-  db.query("SELECT * FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
-    if (err){
+  
+  var collection_id = req.params.collection_id; 
+  //check to see who's calling the server (client or server?)
+  if (req.header('Content-Type') != "application/json"){
+    res.sendFile(__dirname + "/views/collection.html");
+    return;
+  }
+
+  db.query("SELECT title, subject, user_name FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
+    if (err) {
       //TODO: error handling % and special characters
       res.status(500);
       console.log(err);
@@ -67,8 +82,7 @@ app.get("/collections/:collection_id", function(req, res) {
     } else {
       // res.send(results.rows);
       console.log(results)
-      res.render('table', { 'collectionsView' : results.rows } )
-
+      res.send(results.rows);
     };
   });
 });

@@ -21,7 +21,7 @@
                             <div>
                                 {{#each collectionCollection}}
                                 <div class="collection">
-                                    {{title}}
+                                    <a href="collections/" + "{{owner_id}}">{{title}}<a>
                             </div>
                                 {{/each}}
                             </div>
@@ -36,13 +36,13 @@
             className: 'collections',
 
             render: function() {
+                
                 var source = $("#CollectionCollection-template").html();
+
                 var template = Handlebars.compile(source);
 
                 var rendered = template({collectionCollection: this.collection.toJSON()});
-                console.log("this is rendered: " + rendered);
 
-                console.log("this.el= " + $(this.el));
                 $(this.el).append(rendered);
 
                 return this;
@@ -72,7 +72,6 @@
                     console.log("success at document.ready");
                 }
            });
-            // $('body').append(collectionCollectionView.render().el);
       });
 
 
