@@ -76,11 +76,6 @@
       <p><u>Edit suggested by <b>{{userName}}:</b></u> {{body}}</p>
     {{/each}}
   </script>
-  <!-- Dependency scripts -->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
   
   <!-- Backbone stuff -->
   <script>
@@ -91,6 +86,13 @@
         name: '',
         userName: '', 
         email: ''
+      },
+      initialize: function (options) {
+        console.log(options.userName);
+        this.userName = options.userName;
+      },
+      url: function(){
+        return 'http://localhost:3000/user/' + this.userName; 
       }
     });
 
@@ -99,9 +101,6 @@
         subject: '',
         created: ''
       }
-      // url: function(){
-      //   return 'http://localhost:3000/article/' + this.id;
-      // }
     });
 
     var Section = Backbone.Model.extend({
@@ -203,75 +202,90 @@
       }
     });
 
-  //instantiations
-
-    //models
-    var user = new User({
-      name: 'Troy Sultan',
-      userName: 'destroysultan', 
-      email: 'troysultan@gmail.com'
-    });
-
-    var article = new Article({
-      subject: 'Awesome Subject',
-      created: '2015-03-20T22:45:29.994Z'
-    });
-
-    var article2 = new Article({
-      subject: 'Awesome Subject numba 2',
-      created: '2015-03-20T22:45:35.994Z'
-    });
-
-    var section = new Section({
-      title: 'More examples (section title)',
-      created: '2015-03-20T22:45:30.005Z',
-      approved: true
-    });
-
-    var section2 = new Section({
-      title: 'Even more examples (section title)',
-      created: '2015-03-20T23:55:50.005Z',
-      approved: false
-    });
-
-    var pending = new Pending({
-      userName: 'Wen',
-      owner_id: '1',
-      approved: false,
-      body: 'I disagree with this point- wireframing is meant to be most..'
-    });
-
-    //collections
-    var articleCollection = new ArticleCollection([article, article2]);
-
-    var sectionCollection = new SectionCollection([section, section2]);
-
-    var pendingCollection = new PendingCollection([pending]);
-
-    //views
-    var userView = new UserView({
-      model: user
-    });
-
-    var articleView = new ArticleView({
-      collection: articleCollection
-    });
-
-    var sectionView = new SectionView({
-      collection: sectionCollection
-    });
-
-    var pendingView = new PendingView({
-      collection: pendingCollection
-    });
-
     $(document).ready(function() {
+      
+      //instantiate models
+
+      var user = new User({
+        userName: 'troy',
+        email: ''
+      });
+
+      var article = new Article({
+        subject: 'Awesome Subject',
+        created: '2015-03-20T22:45:29.994Z'
+      });
+
+      var article2 = new Article({
+        subject: 'Awesome Subject numba 2',
+        created: '2015-03-20T22:45:35.994Z'
+      });
+
+      var section = new Section({
+        title: 'More examples (section title)',
+        created: '2015-03-20T22:45:30.005Z',
+        approved: true
+      });
+
+      var section2 = new Section({
+        title: 'Even more examples (section title)',
+        created: '2015-03-20T23:55:50.005Z',
+        approved: false
+      });
+
+      var pending = new Pending({
+        userName: 'Wen',
+        owner_id: '1',
+        approved: false,
+        body: 'I disagree with this point- wireframing is meant to be most..'
+      });
+
+      //instantiate views
+
+      var userView = new UserView({
+        model: user
+      });
+      // var articleView = new ArticleView({
+      //   collection: articleCollection
+      // });
+      // var sectionView = new SectionView({
+      //   collection: sectionCollection
+      // });
+      // var pendingView = new PendingView({
+      //   collection: pendingCollection
+      // });
+
+
+
+      //instantiate collections
+
+      var articleCollection = new ArticleCollection([article, article2]);
+
+      var sectionCollection = new SectionCollection([section, section2]);
+
+      var pendingCollection = new PendingCollection([pending]);
+
+      user.fetch({
+        headers: {'Content-Type' : 'application/json'},
+        success: function() {
+          console.log(user.get('email'));
+        }, 
+        error: (function(e) { 
+          console.log('error for document ready funtion ' + e);
+        })
+      });
+
       $('.userProfileInfo').append(userView.render().$el);
-      $('.userArticleInfo').append(articleView.render().$el);
-      $('.userSectionInfo').append(sectionView.render().$el);
-      $('.userPendingInfo').append(pendingView.render().$el);
+      // $('.userArticleInfo').append(articleView.render().$el);
+      // $('.userSectionInfo').append(sectionView.render().$el);
+      // $('.userPendingInfo').append(pendingView.render().$el);
     });
   </script>
+  <!-- Dependency scripts -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
 </body>
 
 </html>

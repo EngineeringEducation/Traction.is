@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/custom.css">
+	<title>yaaarrhhh</title>
+</head>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+	<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script type="text/javascript" src="/js/model.js"></script>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                    </a>
+                </li>
+            	<script id="sections-nav" type="text/x-handlebars-template">
+					
+					{{#each sections}}
+						<li><a href="#"> {{section_title}} </a></li>
+					{{/each}}
+				</script>
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" id="article-content">
+
+                        <script id="article-template" type="text/x-handlebars-template">
+							<h1>
+								{{article.subject}}
+							</h1>
+						</script>
+
+						<script id="sections-template" type="text/x-handlebars-template">
+							{{#each sections}}
+								<div class="section">
+									<h3>{{section_title}}</h3>
+									<p>{{section_body}}</p>
+								</div>
+							{{/each}}
+						</script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+
+	<script>
+
+	  ///////// VIEWS /////////
+
+	  var ArticleView = Backbone.View.extend({
+	  	className: 'article',
+	  	render: function(){
+	  		var template = Handlebars.compile($("#article-template").html());
+	  		var rendered = template({article: this.model.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	}
+	  });
+
+		var CategoryView = Backbone.View.extend({
+			className: 'category',
+			render: function(){
+				var title = this.model.get('category_title');
+				var newNode = $('<li>' + title + '</li>');
+				$(this.el).append(newNode);
+				return this;
+			}
+		});
+
+	  var SectionsView = Backbone.View.extend({
+	  	className: 'sections',
+	  	renderNav: function(){
+	  		var template = Handlebars.compile($('#sections-nav').html());
+	  		var rendered = template({sections: this.collection.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	},
+	  	renderText: function() {
+	  		var template = Handlebars.compile($('#sections-template').html());
+	  		var rendered = template({sections: this.collection.toJSON()});
+	  		$(this.el).append(rendered);
+	  		return this;
+	  	}
+	  });
+
+	  $(document).ready(function() {
+	  	var article = new Article({id: 1});
+	  	var articleView = new ArticleView({model: article});
+
+	    article.fetch({
+	    	success: function() {
+	    			//much success such code wow
+	    			var categoryArray = article.get("categories");
+					
+						for (var i = 0; i < categoryArray.length; i++){
+						var category = new Category({
+						  category_id : categoryArray[i]["category_id"],
+							category_title: categoryArray[i]["category_title"],
+							sections: categoryArray[i]["sections"]
+						});
+
+						var categoryView = new CategoryView({model: category});
+						$('#sidebar-nav').append(categoryView.render().el);
+
+						var sectionArray = category.get("sections");
+						var sectionCollection = new SectionCollection();
+
+						for (var k = 0; k < sectionArray.length; k++){
+							var section = new Section({
+								section_id : sectionArray[k]["section_id"],
+								created : sectionArray[k]["created"],
+								section_title : sectionArray[k]["section_title"],
+								section_body : sectionArray[k]["section_body"],
+								owner_id : sectionArray[k]["owner_id"]
+							});
+							sectionCollection.add(section);
+						}
+
+						var sectionsView = new SectionsView({collection: sectionCollection});
+						var sectionsNavView = new SectionsView({collection: sectionCollection});
+
+			    		$('#article-content').append(articleView.render().el);
+			    		$('#sidebar-nav').append(sectionsNavView.renderNav().el);
+						$('#article-content').append(sectionsView.renderText().el);
+
+					}
+			}
+		});
+
+	});
+
+	</script>
+	</body>
+</html>

@@ -8,9 +8,10 @@ INSERT INTO users (name, user_name, email) VALUES ('wen','wen', 'wen@tradecrafte
 
 
 --inserting collections
-INSERT INTO collections (title, owner_id) VALUES ('Observations', 1);
-INSERT INTO collections (title, owner_id) VALUES ('OOP', 1);
-INSERT INTO collections (title, owner_id) VALUES ('Test Collection', 1);
+INSERT INTO collections (title, owner_id) VALUES ('Engineering', 1);
+INSERT INTO collections (title, owner_id) VALUES ('Growth', 1);
+INSERT INTO collections (title, owner_id) VALUES ('Product Design', 1);
+INSERT INTO collections (title, owner_id) VALUES ('Sales & Business Development', 1);
 
 --inserting permissions
 INSERT INTO permissions (role, user_id) VALUES ('Mod', 1);
@@ -19,13 +20,21 @@ INSERT INTO permissions (role, user_id) VALUES ('User', 3);
 
 --inserting articles
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is a subject');
+<<<<<<< HEAD
 INSERT INTO articles (owner_id, subject) VALUES (1, 'this is another subject');
 INSERT INTO articles (owner_id, subject) VALUES (2, 'Blah blah subject');
 INSERT INTO articles (owner_id, subject) VALUES (3, 'Blah blah another subject');
+=======
+INSERT INTO articles (owner_id, subject) VALUES (2, 'this is another subject');
+INSERT INTO articles (owner_id, subject) VALUES (3, 'and this is also a subject. wudduya know.');
+INSERT INTO articles (owner_id, subject) VALUES (2, 'and this is also a subject for the fourth time.');
+>>>>>>> 6118853e6a6d74aa1edbb17bd753b5f06da37ff1
 
 --inserting articles/collections
 INSERT INTO articles_collections (article_id, collection_id) VALUES (1,1);
 INSERT INTO articles_collections (article_id, collection_id) VALUES (2,2);
+INSERT INTO articles_collections (article_id, collection_id) VALUES (3,3);
+INSERT INTO articles_collections (article_id, collection_id) VALUES (4,4);
 
 --inserting categories
 INSERT INTO categories (article_id, sequence, title) VALUES (1, 1, 'Basics');
