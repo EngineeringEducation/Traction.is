@@ -38,7 +38,7 @@
         categories : new CategoryCollection()
       },
       url: function(){
-        return 'http://localhost:3000/article/' + this.id;
+        return '/article/' + this.id;
       }
 
     });
@@ -49,7 +49,15 @@
     });
 
     var Collection = Backbone.Model.extend({
-        Articles: new ArticleCollection()
+        defaults: {
+          articles: new ArticleCollection(),
+          title: 'broken title',
+          owner_id: 'broken owner_id',
+          created: 'broken collection timestamp'
+        },
+        url: function() {
+          return "/collections/" + this.id;
+        }
     });
 
     var Pending = Backbone.Model.extend({
@@ -70,7 +78,10 @@
     }); 
 
     CollectionCollection = Backbone.Collection.extend({
-        model: Collection
+        model: Collection,
+        url: function() {
+          return "/collections";
+        }
     });
 
     PendingCollection = Backbone.Collection.extend({
