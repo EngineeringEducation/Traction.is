@@ -66,6 +66,14 @@ app.get("/collections/:collection_id", function(req, res) {
   var collection_id = req.params.collection_id; 
   //check to see who's calling the server (client or server?)
   if (req.header('Content-Type') != "application/json"){
+
+    console.log('before set');
+    console.log(res.getHeader('Cache-Control'));
+
+    res.setHeader('Cache-Control', 'no-cache');
+    console.log('after set');
+    console.log(res.getHeader('Cache-Control'));
+    
     res.sendFile(__dirname + "/views/collection.html");
     return;
   }
@@ -81,8 +89,15 @@ app.get("/collections/:collection_id", function(req, res) {
       res.status(404).send('Collection Not Found');
     } else {
       // res.send(results.rows);
-      console.log(results)
+      console.log(results);
+      console.log('before set');
+      console.log(res.getHeader('Cache-Control'));
+      res.setHeader('Cache-Control', 'no-cache');
+      console.log('after set');
+      console.log(res.getHeader('Cache-Control'));
+
       res.send(results.rows);
+
     };
   });
 });

@@ -13,19 +13,29 @@
     <script type="text/javascript" src="/js/model.js"></script>
 
 <body>
+    <div class="col-md-4"></div>
+    <div class="col-md-4"><H1>Collections</H1></div>
+    <div class="col-md-4"></div>
+<br/>
+<br/>
+<br/>
+
     <div id="wrapper">
         <!-- Page Content -->
         <div class="col-lg-12" id="article-content">
-
+                        <!-- #Start Handlebars template -->
                         <script id="CollectionCollection-template" type="text/x-handlebars-template">
                             <div>
                                 {{#each collectionCollection}}
                                 <div class="collection">
-                                    <a href="collections/" + "{{owner_id}}">{{title}}<a>
-                            </div>
+                                <!--There might be an issue with the anchor tag later-->
+                                    <a href="/collections/{{collection_id}}">{{title}}<a>
+                                </div>
                                 {{/each}}
                             </div>
                         </script>
+                                                <!-- #Start Handlebars template -->
+
         </div>
         <!-- /#page-content-wrapper -->
     </div>
@@ -60,6 +70,7 @@
       $(document).ready(function() {
             
            var collectionCollection = new CollectionCollection();
+
            collectionCollection.fetch({
                 success : function () {
                     var collectionCollectionView = new CollectionCollectionView({
