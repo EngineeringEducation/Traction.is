@@ -73,14 +73,30 @@ app.get("/collections/:collection_id", function(req, res) {
   });
 });
 
+app.get('/article/new', function (req, res) {
+  res.sendFile(__dirname + "/views/new.html");
+});
+
+app.post('/article/new', function (req, res) {
+  // db.query("INSERT INTO messages (type_token, channel_token, user_name, message_text) VALUES ($1, $2, $3, $4)", [req.params.type_token, req.params.channel_token, req.body.user_name, req.body.message_text], function(err, result) {
+  //   if (err) {
+  //     if (err.code == "23502") {
+  //       err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body (remember this is a POST request)."
+  //     }
+  //     res.status(500).send(err);
+  //   } else {
+  //     res.send(result);
+  //   }
+  // });
+});
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
   var article_id = req.params.article_id; 
-  // if (req.header('Content-Type') != "application/json"){
-  //   res.sendFile(__dirname + "/views/article.html");
-  //   return;
-  // }
+  if (req.header('Content-Type') != "application/json"){
+    res.sendFile(__dirname + "/views/article.html");
+    return;
+  }
   console.log("boop");
   db.query("SELECT * from article_view WHERE article_id = $1", [req.params.article_id], 
     function(err, result){callback('article_view', err, result)});
@@ -296,7 +312,7 @@ app.get('/user/:user_name', function (req, res) {
             userArticles = result.rows;
             profileJSON['articleInfo'] = userArticles;
 
-            db.query("SELECT title, created, approved FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+            db.query("SELECT title, created, status FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
               if (err) {
                 res.status(500).send(err);
                 console.log(err);
@@ -330,6 +346,8 @@ app.get('/user/:user_name', function (req, res) {
   });
 });
   
+
+
 app.listen(3000, function() {
   console.log('listening');
 });

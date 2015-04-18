@@ -48,7 +48,7 @@
     var Article = Backbone.Model.extend({
       defaults:{
         subject: 'broken subject',
-        categories : new CategoryCollection()
+        categories : new SectionCollection()
       },
       url: function(){
         return '/article/' + this.id;
