@@ -273,7 +273,12 @@ app.get('/user/:user_name', function (req, res) {
   var userArticles;
   var completion = 0;
   var profileJSON = {};  
-
+  console.log(req.header('Content-Type'));
+  if (req.header('Content-Type') != "application/json"){
+     res.sendFile(__dirname + "/views/user.html");
+     return;
+  }
+  console.log(req.params);
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       console.log('error');
@@ -294,7 +299,7 @@ app.get('/user/:user_name', function (req, res) {
             userArticles = result.rows;
             profileJSON['articleInfo'] = userArticles;
 
-            db.query("SELECT title, created, approved FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
+            db.query("SELECT title, created, status FROM section_view WHERE owner_id = $1", [user.user_id], function(err, result) {
               if (err) {
                 res.status(500).send(err);
                 console.log(err);
