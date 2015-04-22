@@ -14,6 +14,7 @@
 
 <body>
     <!-- TODO: Styles -->
+    <!-- TODO: implement dynamic link that fetches by article_id -->
 
     <!--#Start page content-->
     <div id ="page-content-wrapper">
@@ -23,13 +24,15 @@
                         
                         <!--#Start Handlebars tempalte-->
                         <!-- Handlebars template allows us to dynamically display JSON data from the server in good looking, clean, HTML -->
+                        
+    
+
                         <script id="collection-template" type="text/x-handlebars-template">
                             <div>
-                                //For each row in the collection table
+                                <!-- For each row in the collection table -->
                                 {{#each collection}}
-                                //this link is hard coded
-                                //TODO: implement dynamic link that fetches by article_id
-                                <li><a href="/article/1">{{subject}}</a></li>
+                                <!--this link is hard coded-->
+                                <li><a href="/article/" + "{{col_id}}">{{subject}}</a></li>
                                 {{/each}}
                             </div>
 
@@ -62,7 +65,7 @@
         //String manipulation to get the collection_id
         var collection_id = location["pathname"].replace("/collections/", "");
         //(1) Instantiating a collection with the collection_id we pulled from the pathname
-        var collection = new Collection({id: collection_id});
+        var collection = new Collection({col_id: collection_id});
         
         //Dynamically fetch by collection_id from server
         collection.fetch({
