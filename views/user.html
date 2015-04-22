@@ -83,7 +83,7 @@
   <!-- Backbone stuff -->
   <script>
     //Define models
-    
+
     var User = Backbone.Model.extend({
       defaults: {
         name: '',
@@ -209,7 +209,10 @@
       //instantiate models
 
       // TO-DO: how to make username variable
-      var user = new User({userName: 'destroysultan'});
+      var user_name = location["pathname"].replace("/user/", "");
+      var user = new User({userName: user_name});
+
+
 
       user.fetch({
         headers: {'Content-Type' : 'application/json'},
@@ -230,10 +233,10 @@
                 // owner_id : articleArray[i]["owner_id"]
             })
             articleCollection.add(article);
-
-            var articleView = new ArticleView({collection: articleCollection});
-            $('.userArticleInfo').append(articleView.render().$el);
           };
+
+          var articleView = new ArticleView({collection: articleCollection});
+          $('.userArticleInfo').append(articleView.render().$el);
 
           var sectionArray = user.get("sectionInfo");
           var sectionCollection = new SectionCollection();
@@ -245,10 +248,10 @@
               approved : sectionArray[i]["approved"]
             });
             sectionCollection.add(section);
-
-            var sectionView = new SectionView({collection: sectionCollection});
-            $('.userSectionInfo').append(sectionView.render().$el);
           };
+
+          var sectionView = new SectionView({collection: sectionCollection});
+          $('.userSectionInfo').append(sectionView.render().$el);
 
           var pendingArray = user.get("pendingInfo");
           var pendingCollection = new PendingCollection();
@@ -262,10 +265,10 @@
               role: pendingArray[i]["role"]
             });
             pendingCollection.add(pending);
-
-            var pendingView = new PendingView({collection: pendingCollection});
-            $('.userPendingInfo').append(pendingView.render().$el);
           };
+          
+          var pendingView = new PendingView({collection: pendingCollection});
+          $('.userPendingInfo').append(pendingView.render().$el);
         }, 
         error: (function(e) { 
           console.log('error for document ready funtion ' + e);
