@@ -14,18 +14,21 @@
 
 <body>
     <!-- TODO: Styles -->
-    <!-- page content -->
 
-
+    <!--#Start page content-->
     <div id ="page-content-wrapper">
         <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12" id="collection-content">
                         
                         <!--#Start Handlebars tempalte-->
+                        <!-- Handlebars template allows us to dynamically display JSON data from the server in good looking, clean, HTML -->
                         <script id="collection-template" type="text/x-handlebars-template">
                             <div>
+                                //For each row in the collection table
                                 {{#each collection}}
+                                //this link is hard coded
+                                //TODO: implement dynamic link that fetches by article_id
                                 <li><a href="/article/1">{{subject}}</a></li>
                                 {{/each}}
                             </div>
@@ -33,17 +36,22 @@
                             <div><h1><a href="../collections">BACK to Collctions</a></h1></div>
                         </script>
                         <!-- #End Handlebars Template -->
-                        
                     </div>
                 </div>
         </div>
     </div>
+    <!-- #End page content -->
+
+    <!-- #Start model and view instantiation -->
     <script>
+    // Instantiating Collection View
     var CollectionView = Backbone.View.extend({
         className: 'collection',
         render: function() {
+            // Compiling and appending to DOM the Handlebars template
             var template = Handlebars.compile($('#collection-template').html());
             var rendered = template({collection: this.model.toJSON()});
+            // Append the render to el
             $(this.el).append(rendered);
             return this;
         }
@@ -51,22 +59,24 @@
 
     $(document).ready(function() {
         
-        //dynamically fetch by id from server
-        
+        //String manipulation to get the collection_id
         var collection_id = location["pathname"].replace("/collections/", "");
-        var  collection = new Collection({id: collection_id});
+        //(1) Instantiating a collection with the collection_id we pulled from the pathname
+        var collection = new Collection({id: collection_id});
         
-
+        //Dynamically fetch by collection_id from server
         collection.fetch({
+            //on success
             success: function() {
-
+                //(2) Instantiating collection view using our collection instance (1)
                 var collectionView = new CollectionView({model: collection});
-
+                //Append to #page-content-wrapper our render of collection View (2)
                 $('#page-content-wrapper').append(collectionView.render().el);
             }
         });
-    })
+    });
     </script>
+    <!-- #End model and view instantiation -->
 </body>
 
 </html>
