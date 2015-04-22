@@ -108,13 +108,6 @@
 		  		$(this.el).append(rendered);
 		  		return this;
 		  	}
-		  	// ,
-		  	// renderText: function() {
-		  	// 	var template = Handlebars.compile($('#sections-template').html());
-		  	// 	var rendered = template({sections: this.collection.toJSON()});
-		  	// 	$(this.el).append(rendered);
-		  	// 	return this;
-		  	// }
 		});
 
 		var ResourcesView = Backbone.View.extend({
@@ -138,20 +131,6 @@
 		    	success: function() {
 	    			//much success such code wow
 	    			$('#article-content').append(articleView.render().el);
-
-	   			// var categoryArray = article.get("categories");
-					
-					// for (var i = 0; i < categoryArray.length; i++){
-					// 	var category = new Category({
-					// 	  	category_id : categoryArray[i]["category_id"],
-					// 		category_title: categoryArray[i]["category_title"],
-					// 		sections: categoryArray[i]["sections"]
-					// 	});
-
-						// var categoryView = new CategoryView({model: category});
-						// $('.sidebar-nav').append(categoryView.render().el);
-
-						// var sectionArray = category.get("sections");
 
 						var sectionArray = article.get("sections");
 						var sectionCollection = new SectionCollection();

@@ -60,6 +60,7 @@ app.get("/collections", function(req, res) {
 
 //GET /collections/:collection_id
 //returns all articles within a collection, given the collection_id
+//TODO: Solve no-cache problem; when hitting back or forward on the browser, data will be displayed in JSON format
 app.get("/collections/:collection_id", function(req, res) {
   console.log(req.params.collection_id);
   
@@ -67,12 +68,13 @@ app.get("/collections/:collection_id", function(req, res) {
   //check to see who's calling the server (client or server?)
   if (req.header('Content-Type') != "application/json"){
 
-    console.log('before set');
-    console.log(res.getHeader('Cache-Control'));
+    //my attempt at debugging the cache problem
+    // console.log('before set');
+    // console.log(res.getHeader('Cache-Control'));
 
-    res.setHeader('Cache-Control', 'no-cache');
-    console.log('after set');
-    console.log(res.getHeader('Cache-Control'));
+    // res.setHeader('Cache-Control', 'no-cache');
+    // console.log('after set');
+    // console.log(res.getHeader('Cache-Control'));
     
     res.sendFile(__dirname + "/views/collection.html");
     return;
@@ -89,12 +91,15 @@ app.get("/collections/:collection_id", function(req, res) {
       res.status(404).send('Collection Not Found');
     } else {
       // res.send(results.rows);
-      console.log(results);
-      console.log('before set');
-      console.log(res.getHeader('Cache-Control'));
-      res.setHeader('Cache-Control', 'no-cache');
-      console.log('after set');
-      console.log(res.getHeader('Cache-Control'));
+      // console.log(results);
+
+
+      //my attempt at debugging the cache problem
+      // console.log('before set');
+      // console.log(res.getHeader('Cache-Control'));
+      // res.setHeader('Cache-Control', 'no-cache');
+      // console.log('after set');
+      // console.log(res.getHeader('Cache-Control'));
 
       res.send(results.rows);
 
@@ -336,7 +341,7 @@ app.get('/user/:user_name', function (req, res) {
         console.log(result.rows);
         user = result.rows[0];
         console.log(user);
-        profileJSON['userInfo'] = user;
+        profileJSON = user;
 
         db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
           if (err) {
@@ -354,7 +359,7 @@ app.get('/user/:user_name', function (req, res) {
                 userSections = result.rows;
                 profileJSON['sectionInfo'] = userSections;
 
-                db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                db.query("SELECT * FROM proposed_edits", function(err, result) {
                   if (err) {
                     res.status(500).send(err);
                     console.log(err);
