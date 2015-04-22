@@ -49,9 +49,9 @@ INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VA
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (2, 2, 'Some basics about the importance of inheritance and stuff', 1, 'Rejected');
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (3, 3, 'Some examples about squares being rectangles or something like that', 1, 'Accepted');
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (4, 3, 'Some examples about squares about fruits and vegetables', 1, 'Rejected');
-INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (5, 1, 'Things can often times be more than one thing.', 2, 'Accepted');
+INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (5, 2, 'Things can often times be more than one thing.', 2, 'Accepted');
 INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (4, 3, 'Some examples about squares about fruits and vegetables', 'Pending');
-INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (5, 1, 'Things can often times be more than one thing.', 'Pending');
+INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (5, 2, 'Things can often times be more than one thing.', 'Pending');
 
 --inserting resources
 INSERT INTO resources(section_id, title, owner_id, body) VALUES (1, 'Who originally said this?', 3, 'Check this blog post about this silly joke.');

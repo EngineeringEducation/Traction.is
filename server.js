@@ -307,7 +307,7 @@ app.get('/user/:user_name', function (req, res) {
                 userSections = result.rows;
                 profileJSON['sectionInfo'] = userSections;
 
-                db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                db.query("SELECT * FROM proposed_edits", function(err, result) {
                   if (err) {
                     res.status(500).send(err);
                     console.log(err);

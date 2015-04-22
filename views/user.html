@@ -59,7 +59,7 @@
   <!-- User articles template -->
   <script id="article-info-template" type="text/x-handlebars-template">
     {{#each articleCollection}}
-      <p><u>{{subject}}</u>, {{created}}</p>
+      <p> {{created}} -  <b>{{subject}}</b></p>
     {{/each}}
   </script>
 
@@ -67,13 +67,13 @@
   <!-- Edits published by user template -->
   <script id="section-info-template" type="text/x-handlebars-template">
     {{#each sectionCollection}}
-      <p><u>{{title}}</u>, {{created}}</p>
+      <p>{{created}} -  <b>{{title}}</b></p>
     {{/each}}
   </script>
   <!-- Edits awaiting user to approve -->
   <script id="pending-info-template" type="text/x-handlebars-template">
     {{#each pendingCollection}}
-      <p><u>Edit suggested by <b>{{userName}}:</b></u> {{body}}</p>
+      <p>Edit suggested by <b>{{user_name}}:</b> {{body}}</p>
     {{/each}}
   </script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -230,7 +230,6 @@
             var article = new Article({
                 created : articleArray[i]["created"],
                 subject : articleArray[i]["subject"]
-                // owner_id : articleArray[i]["owner_id"]
             })
             articleCollection.add(article);
           };
@@ -258,15 +257,13 @@
 
           for (var i = 0; i < pendingArray.length; i++) {
             var pending = new Pending({
-              userName: pendingArray[i]["userName"],
-              owner_id: pendingArray[i]["owner_id"],
-              approved: pendingArray[i]["approved"],
-              body: pendingArray[i]["userName"], 
+              user_name: pendingArray[i]["user_name"],
+              body: pendingArray[i]["body"], 
               role: pendingArray[i]["role"]
             });
             pendingCollection.add(pending);
           };
-          
+
           var pendingView = new PendingView({collection: pendingCollection});
           $('.userPendingInfo').append(pendingView.render().$el);
         }, 
