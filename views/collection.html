@@ -17,12 +17,16 @@
     <!-- TODO: implement dynamic link that fetches by article_id -->
 
     <!--#Start page content-->
+
+    <!-- page content -->
+
     <div id ="page-content-wrapper">
         <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12" id="collection-content">
                         
                         <!--#Start Handlebars tempalte-->
+
                         <!-- Handlebars template allows us to dynamically display JSON data from the server in good looking, clean, HTML -->
                         
     
@@ -62,6 +66,7 @@
 
     $(document).ready(function() {
         
+
         //String manipulation to get the collection_id
         var collection_id = location["pathname"].replace("/collections/", "");
         //(1) Instantiating a collection with the collection_id we pulled from the pathname
