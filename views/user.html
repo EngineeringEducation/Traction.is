@@ -83,7 +83,7 @@
   <!-- Backbone stuff -->
   <script>
     //Define models
-
+    
     var User = Backbone.Model.extend({
       defaults: {
         name: '',
@@ -192,7 +192,6 @@
       }
     });
 
-
     var UserView = Backbone.View.extend({
       className: "user",
       render: function() {
@@ -209,69 +208,71 @@
       
       //instantiate models
 
-      var user = new User({
-        userName:'troy'
-      });
-
-      var article = new Article({
-        subject: 'Awesome Subject',
-        created: '2015-03-20T22:45:29.994Z'
-      });
-
-      var article2 = new Article({
-        subject: 'Awesome Subject numba 2',
-        created: '2015-03-20T22:45:35.994Z'
-      });
-
-      var section = new Section({
-        title: 'More examples (section title)',
-        created: '2015-03-20T22:45:30.005Z',
-        approved: true
-      });
-
-      var section2 = new Section({
-        title: 'Even more examples (section title)',
-        created: '2015-03-20T23:55:50.005Z',
-        approved: false
-      });
-
-      var pending = new Pending({
-        userName: 'Wen',
-        owner_id: '1',
-        approved: false,
-        body: 'I disagree with this point- wireframing is meant to be most..'
-      });
-
-      //instantiate views
-
-      // var articleView = new ArticleView({collection: articleCollection});
-      // var sectionView = new SectionView({collection: sectionCollection});
-      // var pendingView = new PendingView({collection: pendingCollection});
-
-      //instantiate collections
-
-      var articleCollection = new ArticleCollection([article, article2]);
-      var sectionCollection = new SectionCollection([section, section2]);
-      var pendingCollection = new PendingCollection([pending]);
+      // TO-DO: how to make username variable
+      var user = new User({userName: 'destroysultan'});
 
       user.fetch({
         headers: {'Content-Type' : 'application/json'},
         success: function() {      
-          //do something
+          // console.log(user);
+          // define user view
           var userView = new UserView({model: user});
           $('.userProfileInfo').append(userView.render().$el);
+          
+          //SOMETHING
+          var articleArray = user.get("articleInfo");
+          var articleCollection = new ArticleCollection();
+
+          for (var i = 0; i < articleArray.length; i++) {
+            var article = new Article({
+                created : articleArray[i]["created"],
+                subject : articleArray[i]["subject"]
+                // owner_id : articleArray[i]["owner_id"]
+            })
+            articleCollection.add(article);
+
+            var articleView = new ArticleView({collection: articleCollection});
+            $('.userArticleInfo').append(articleView.render().$el);
+          };
+
+          var sectionArray = user.get("sectionInfo");
+          var sectionCollection = new SectionCollection();
+          
+          for (var i = 0; i < sectionArray.length; i++) {
+            var section = new Section({
+              title : sectionArray[i]["title"],
+              created : sectionArray[i]["created"],
+              approved : sectionArray[i]["approved"]
+            });
+            sectionCollection.add(section);
+
+            var sectionView = new SectionView({collection: sectionCollection});
+            $('.userSectionInfo').append(sectionView.render().$el);
+          };
+
+          var pendingArray = user.get("pendingInfo");
+          var pendingCollection = new PendingCollection();
+
+          for (var i = 0; i < pendingArray.length; i++) {
+            var pending = new Pending({
+              userName: pendingArray[i]["userName"],
+              owner_id: pendingArray[i]["owner_id"],
+              approved: pendingArray[i]["approved"],
+              body: pendingArray[i]["userName"], 
+              role: pendingArray[i]["role"]
+            });
+            pendingCollection.add(pending);
+
+            var pendingView = new PendingView({collection: pendingCollection});
+            $('.userPendingInfo').append(pendingView.render().$el);
+          };
         }, 
         error: (function(e) { 
           console.log('error for document ready funtion ' + e);
         })
       });
-
-      // $('.userArticleInfo').append(articleView.render().$el);
-      // $('.userSectionInfo').append(sectionView.render().$el);
-      // $('.userPendingInfo').append(pendingView.render().$el);
     });
   </script>
-  <!-- Dependency scripts -->
 </body>
 
 </html>

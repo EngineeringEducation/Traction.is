@@ -289,7 +289,7 @@ app.get('/user/:user_name', function (req, res) {
         console.log(result.rows);
         user = result.rows[0];
         console.log(user);
-        profileJSON['userInfo'] = user;
+        profileJSON = user;
 
         db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
           if (err) {
