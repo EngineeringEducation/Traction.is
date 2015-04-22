@@ -113,9 +113,9 @@
 	    article.fetch({
 	    	success: function() {
 	    			//much success such code wow
-	    			var categoryArray = article.get("categories");
+	    		var categoryArray = article.get("categories");
 					
-						for (var i = 0; i < categoryArray.length; i++){
+					for (var i = 0; i < categoryArray.length; i++){
 						var category = new Category({
 						  category_id : categoryArray[i]["category_id"],
 							category_title: categoryArray[i]["category_title"],

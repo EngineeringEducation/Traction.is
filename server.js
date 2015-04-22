@@ -294,7 +294,7 @@ app.get('/user/:user_name', function (req, res) {
         console.log(result.rows);
         user = result.rows[0];
         console.log(user);
-        profileJSON['userInfo'] = user;
+        profileJSON = user;
 
         db.query("SELECT subject, created FROM articles WHERE owner_id = $1", [user.user_id], function(err, result) {
           if (err) {
@@ -312,7 +312,7 @@ app.get('/user/:user_name', function (req, res) {
                 userSections = result.rows;
                 profileJSON['sectionInfo'] = userSections;
 
-                db.query("SELECT * FROM proposed_edits WHERE owner_id = $1", [user.user_id], function(err, result) {
+                db.query("SELECT * FROM proposed_edits", function(err, result) {
                   if (err) {
                     res.status(500).send(err);
                     console.log(err);
