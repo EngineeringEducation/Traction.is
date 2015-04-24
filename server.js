@@ -80,7 +80,7 @@ app.get("/collections/:collection_id", function(req, res) {
     return;
   }
 
-  db.query("SELECT title, subject, user_name FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
+  db.query("SELECT title, subject, user_name, article_id FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
     if (err) {
       //TODO: error handling % and special characters
       res.status(500);
