@@ -7,10 +7,23 @@
       }
     });
 
+    var Resource = Backbone.Model.extend({
+      defaults: {
+        title : "Wikipedia link",
+        body: "someurl.com/wiki/Something",
+        created: new Date()
+      }
+    }); 
+
+    ResourceCollection = Backbone.Collection.extend({
+      model: Resource
+    });
+
     var Section = Backbone.Model.extend({
       defaults: {
-      section_title : "broken title",
-      section_body : "broken text",
+        section_title : "broken title",
+        section_body : "broken text",
+        resources: new ResourceCollection()
       }
     });
 
@@ -35,7 +48,7 @@
     var Article = Backbone.Model.extend({
       defaults:{
         subject: 'broken subject',
-        categories : new CategoryCollection()
+        categories : new SectionCollection()
       },
       url: function(){
         return '/article/' + this.id;
@@ -69,14 +82,6 @@
       }
     });
 
-    var Resource = Backbone.Model.extend({
-      defaults: {
-        title : "Wikipedia link",
-        body: "someurl.com/wiki/Something",
-        created: new Date()
-      }
-    }); 
-
     CollectionCollection = Backbone.Collection.extend({
         model: Collection,
         url: function() {
@@ -89,9 +94,5 @@
       comparator: function(model) {
         return model.get('userName');
       }
-    });
-
-    ResourceCollection = Backbone.Collection.extend({
-      model: Resource
     });
 
