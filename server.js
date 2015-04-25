@@ -107,6 +107,22 @@ app.get("/collections/:collection_id", function(req, res) {
   });
 });
 
+// app.get('/article/new', function (req, res) {
+//   res.sendFile(__dirname + "/views/new.html");
+// });
+
+// app.post('/article/new', function (req, res) {
+//   // db.query("INSERT INTO messages (type_token, channel_token, user_name, message_text) VALUES ($1, $2, $3, $4)", [req.params.type_token, req.params.channel_token, req.body.user_name, req.body.message_text], function(err, result) {
+//   //   if (err) {
+//   //     if (err.code == "23502") {
+//   //       err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body (remember this is a POST request)."
+//   //     }
+//   //     res.status(500).send(err);
+//   //   } else {
+//   //     res.send(result);
+//   //   }
+//   // });
+// });
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
@@ -126,7 +142,8 @@ app.get('/article/:article_id', function (req, res) {
   var completion = 0;
   var articleJSON = {};
   var sectionWithResourcesArray = [];
-  var categoriesArray = [];
+  //var categoriesArray = [];
+  var sectionsArray = [];
 
   var callback = function (querytype, err, result) {
     completion++;
@@ -184,70 +201,27 @@ app.get('/article/:article_id', function (req, res) {
 
     else if (querytype == "sections_view"){
       var results = result.rows;
-      var i = 0;
-      var categoryIDIndex = -1;
-      var sectionJSON = [];
 
-      while (i < results.length){
-        //moving on to  a new section id
-        if (categoryIDIndex != results[i]["category_id"]){
-          //check if finished with section json collection
-          if (sectionJSON.length > 0){
-
-            //file the jsons away for the section
-            var categoryJSON = {"category_id" : categoryIDIndex};
-            categoryJSON["category_title"] = results[i-1]["category_title"];
-            categoryJSON["sections"] = sectionJSON;
-            console.log(categoryJSON);
-
-            //put all the section info for the category into the array
-            categoriesArray.push(categoryJSON);
-
-            console.log("categoryJSON! : ")
-            console.log(categoryJSON);
-            categoryJSON = [];
-            sectionJSON = [];
-          }
-
-          categoryIDIndex = results[i]["category_id"];
-
-        }
+      for (var i = 0; i < results.length; i++) {
 
         var section = {};
 
-        section["section_id"] = results[i]["section_id"];
-        section["sequence"] = results[i]["sequence"];
-        section["section_title"] = results[i]["section_title"];
-        section["section_body"] = results[i]["section_body"];
-        section["owner_id"] = results[i]["owner_id"];
-        section["created"] = results[i]["created"];
-  
-        //have to check if there are already a section in the array from 
-        //resources being populated
         for (var k = 0; k < sectionWithResourcesArray.length; k++){
            if (sectionWithResourcesArray[k]["section_id"] == results[i]["section_id"]){
-             console.log("whoop found a match");
              section["resources"] = sectionWithResourcesArray[k]["resources"];
              break;
            }
-         }
+        }
 
-        sectionJSON.push(section);
+        section["section_id"] = results[i]["section_id"];
+        section["section_title"] = results[i]["section_title"];
+        section["section_body"] = results[i]["section_body"];
+        section["created"] = results[i]["created"];
+        section["owner_id"] = results[i]["owner_id"];
 
-        i++;
+        sectionsArray.push(section);
       }
 
-
-      //account for the last group of resources
-      if (sectionJSON.length > 0){
-        var category= {"category_id" :  categoryIDIndex} ;
-        category["category_title"] = results[results.length-1]["category_title"];
-        category["sections"] = sectionJSON;
-
-        //put all the resource info for the section into the array
-        categoriesArray.push(category);
-        console.log("last one");
-      }
     }
 
     else if (querytype == "article_view"){
@@ -260,7 +234,7 @@ app.get('/article/:article_id', function (req, res) {
         articleJSON["owner_id"] = result.rows[0]["owner_id"];
         articleJSON["user_name"] = result.rows[0]["user_name"];
 
-        articleJSON["categories"] = categoriesArray;
+        articleJSON["sections"] = sectionsArray;
       }
     }
 
@@ -338,6 +312,8 @@ app.get('/user/:user_name', function (req, res) {
   });
 });
   
+
+
 app.listen(3000, function() {
   console.log('listening');
 });
