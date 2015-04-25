@@ -39,12 +39,12 @@ INSERT INTO categories (article_id, sequence, title) VALUES (3, 3, 'What is it?'
 INSERT INTO categories (article_id, sequence, title) VALUES (1, 2, 'Advanced');
 
 --inserting sections
-INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (1, 'There are 10 kinds of people in the world', 'Ones who know binary and ones who do not', 1, 1);
+INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (1, '10 kinds of people', 'Ones who know binary and ones who do not', 1, 1);
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (2, 'Basics', 'Some basics about the importance of inheritance and stuff', 2, 1);
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (2, 'Examples', 'Some examples about squares being rectangles or something like that',2, 2);
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (2, 'More examples', 'Some more examples about fruits and vegetables',2, 3);
 INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (3, 'Intro to polymorph', 'Things can often times be more than one thing.', 3, 1);
-INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (1, 'Sketching', 'Doodle doodle doodle', 4, 1);
+INSERT INTO sections (article_id, title, body, category_id, sequence) VALUES (1, 'Sketching', 'Doodle doodle doodle', 1, 1);
 
 --inserting section/versions
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (1, 1, 'Ones who know binnary and ones who do not', 3, 'Accepted');
@@ -54,6 +54,7 @@ INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VA
 INSERT INTO section_versions (section_id, owner_id, body, auditor_id, status) VALUES (5, 2, 'Things can often times be more than one thing.', 2, 'Accepted');
 INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (4, 3, 'Some examples about squares about fruits and vegetables', 'Pending');
 INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (5, 2, 'Things can often times be more than one thing.', 'Pending');
+INSERT INTO section_versions (section_id, owner_id, body, status) VALUES (6, 1, 'Sketching', 'Accepted');
 
 --inserting resources
 INSERT INTO resources(section_id, title, owner_id, body) VALUES (1, 'Who originally said this?', 3, 'Check this blog post about this silly joke.');

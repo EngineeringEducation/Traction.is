@@ -20,7 +20,7 @@ select
 	sv.body as section_body, sv.owner_id, sv.created 
 	from articles a,
 	sections s, section_versions sv where a.article_id = s.article_id and
-	s.section_id = sv.section_id and sv.status = 'Accepted' order by s.sequence;
+	s.section_id = sv.section_id  and sv.status = 'Accepted' order by s.sequence;
 
 ------removing category as a concept for right now ----------
 -- CREATE VIEW sections_view as
