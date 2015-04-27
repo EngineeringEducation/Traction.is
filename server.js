@@ -68,13 +68,13 @@ app.get("/collections/:collection_id", function(req, res) {
   //check to see who's calling the server (client or server?)
   if (req.header('Content-Type') != "application/json"){
 
-    //my attempt at debugging the cache problem
-    // console.log('before set');
-    // console.log(res.getHeader('Cache-Control'));
+    // my attempt at debugging the cache problem
+    console.log('before set');
+    console.log(res.getHeader('Cache-Control'));
 
-    // res.setHeader('Cache-Control', 'no-cache');
-    // console.log('after set');
-    // console.log(res.getHeader('Cache-Control'));
+    res.setHeader('cache-control', 'no-cache');
+    console.log('after set');
+    console.log(res.getHeader('cache-control'));
     
     res.sendFile(__dirname + "/views/collection.html");
     return;
@@ -94,12 +94,12 @@ app.get("/collections/:collection_id", function(req, res) {
       // console.log(results);
 
 
-      //my attempt at debugging the cache problem
-      // console.log('before set');
-      // console.log(res.getHeader('Cache-Control'));
-      // res.setHeader('Cache-Control', 'no-cache');
-      // console.log('after set');
-      // console.log(res.getHeader('Cache-Control'));
+      // my attempt at debugging the cache problem
+      console.log('before set');
+      console.log(res.getHeader('cache-control'));
+      res.setHeader('cache-control', 'no-cache');
+      console.log('after set');
+      console.log(res.getHeader('cache-control'));
 
       res.send(results.rows);
 

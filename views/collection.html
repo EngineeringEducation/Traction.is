@@ -38,7 +38,7 @@
         </div>
     </div>
     <script>
-    var CollectionView = Backbone.View.extend({
+    var CollectionsView = Backbone.View.extend({
         className: 'collection',
         render: function() {
             var template = Handlebars.compile($('#collection-template').html());
@@ -63,9 +63,9 @@
         collection.fetch({
             success: function() {
 
-                var collectionView = new CollectionView({model: collection});
+                var collectionsView = new CollectionsView({model: collection});
 
-                $('#page-content-wrapper').append(collectionView.render().el);
+                $('#page-content-wrapper').append(collectionsView.render().el);
             }
         });
     })
