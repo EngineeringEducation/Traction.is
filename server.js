@@ -255,9 +255,11 @@ app.get('/user/:user_name', function (req, res) {
   console.log(req.header('Content-Type'));
   if (req.header('Content-Type') != "application/json"){
      res.sendFile(__dirname + "/views/user.html");
+     console.log('serving html for user/ ' + req.params.user_name)
+
      return;
   }
-  console.log(req.params);
+  console.log('serving JSON', req.params);
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       console.log('error');
