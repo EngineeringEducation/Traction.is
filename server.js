@@ -314,7 +314,7 @@ app.get('/user/:user_name', function (req, res) {
   
 
 
-app.listen(PORT, function() {
+app.listen(process.env.PORT, function() {
   console.log('listening');
 });
 
