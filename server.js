@@ -107,22 +107,22 @@ app.get("/collections/:collection_id", function(req, res) {
   });
 });
 
-// app.get('/article/new', function (req, res) {
-//   res.sendFile(__dirname + "/views/new.html");
-// });
+app.get('/article/new', function (req, res) {
+  res.sendFile(__dirname + "/views/create.html");
+});
 
-// app.post('/article/new', function (req, res) {
-//   // db.query("INSERT INTO messages (type_token, channel_token, user_name, message_text) VALUES ($1, $2, $3, $4)", [req.params.type_token, req.params.channel_token, req.body.user_name, req.body.message_text], function(err, result) {
-//   //   if (err) {
-//   //     if (err.code == "23502") {
-//   //       err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body (remember this is a POST request)."
-//   //     }
-//   //     res.status(500).send(err);
-//   //   } else {
-//   //     res.send(result);
-//   //   }
-//   // });
-// });
+app.post('/article/new', function (req, res) {
+  // db.query("INSERT INTO messages (type_token, channel_token, user_name, message_text) VALUES ($1, $2, $3, $4)", [req.params.type_token, req.params.channel_token, req.body.user_name, req.body.message_text], function(err, result) {
+  //   if (err) {
+  //     if (err.code == "23502") {
+  //       err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body (remember this is a POST request)."
+  //     }
+  //     res.status(500).send(err);
+  //   } else {
+  //     res.send(result);
+  //   }
+  // });
+});
 
 //GET request: returns article
 app.get('/article/:article_id', function (req, res) {
@@ -314,8 +314,6 @@ app.get('/user/:user_name', function (req, res) {
   });
 });
   
-
-
 app.listen(process.env['PORT'], function() {
   console.log('listening');
 });
