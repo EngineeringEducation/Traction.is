@@ -1,4 +1,4 @@
-
+//User
     var User = Backbone.Model.extend({
       defaults: {
         name: 'broken name',
@@ -6,7 +6,9 @@
         email: 'broken email'
       }
     });
-
+//###################################################################
+//Resource
+//###################################################################
     var Resource = Backbone.Model.extend({
       defaults: {
         title : "Wikipedia link",
@@ -18,7 +20,9 @@
     ResourceCollection = Backbone.Collection.extend({
       model: Resource
     });
-
+//###################################################################
+//Section
+//###################################################################
     var Section = Backbone.Model.extend({
       defaults: {
         section_title : "broken title",
@@ -33,7 +37,9 @@
         return model.get('created');
       }
     });
-
+//###################################################################
+//Category
+//###################################################################
     var Category = Backbone.Model.extend({
       defaults: {
         category_title: 'broken category title',
@@ -44,7 +50,9 @@
     CategoryCollection = Backbone.Collection.extend({
       model: Category
     });
-
+//###################################################################
+//Articles
+//###################################################################
     var Article = Backbone.Model.extend({
       defaults:{
         subject: 'broken subject',
@@ -60,7 +68,9 @@
         model: Article,
         comparator: 'id'
     });
-
+//###################################################################
+//Collection
+//###################################################################
     var Collection = Backbone.Model.extend({
         defaults: {
           articles: new ArticleCollection(),
@@ -73,6 +83,13 @@
         }
     });
 
+    CollectionCollection = Backbone.Collection.extend({
+        model: Collection,
+        url: function() {
+          return "/collections";
+        }
+    });
+//###################################################################
     var Pending = Backbone.Model.extend({
       defaults: {
         userName: 'broken username',
@@ -82,12 +99,7 @@
       }
     });
 
-    CollectionCollection = Backbone.Collection.extend({
-        model: Collection,
-        url: function() {
-          return "/collections";
-        }
-    });
+
 
     PendingCollection = Backbone.Collection.extend({
       model: Pending,

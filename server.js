@@ -68,19 +68,19 @@ app.get("/collections/:collection_id", function(req, res) {
   //check to see who's calling the server (client or server?)
   if (req.header('Content-Type') != "application/json"){
 
-    //my attempt at debugging the cache problem
-    // console.log('before set');
-    // console.log(res.getHeader('Cache-Control'));
+    // my attempt at debugging the cache problem
+    console.log('before set');
+    console.log(res.getHeader('Cache-Control'));
 
-    // res.setHeader('Cache-Control', 'no-cache');
-    // console.log('after set');
-    // console.log(res.getHeader('Cache-Control'));
+    res.setHeader('cache-control', 'no-cache');
+    console.log('after set');
+    console.log(res.getHeader('cache-control'));
     
     res.sendFile(__dirname + "/views/collection.html");
     return;
   }
 
-  db.query("SELECT title, subject, user_name FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
+  db.query("SELECT title, subject, user_name, article_id FROM collectionsView WHERE collection_id = $1;", [req.params.collection_id], function (err, results) {
     if (err) {
       //TODO: error handling % and special characters
       res.status(500);
@@ -94,12 +94,12 @@ app.get("/collections/:collection_id", function(req, res) {
       // console.log(results);
 
 
-      //my attempt at debugging the cache problem
-      // console.log('before set');
-      // console.log(res.getHeader('Cache-Control'));
-      // res.setHeader('Cache-Control', 'no-cache');
-      // console.log('after set');
-      // console.log(res.getHeader('Cache-Control'));
+      // my attempt at debugging the cache problem
+      console.log('before set');
+      console.log(res.getHeader('cache-control'));
+      res.setHeader('cache-control', 'no-cache');
+      console.log('after set');
+      console.log(res.getHeader('cache-control'));
 
       res.send(results.rows);
 
@@ -255,9 +255,11 @@ app.get('/user/:user_name', function (req, res) {
   console.log(req.header('Content-Type'));
   if (req.header('Content-Type') != "application/json"){
      res.sendFile(__dirname + "/views/user.html");
+     console.log('serving html for user/ ' + req.params.user_name)
+
      return;
   }
-  console.log(req.params);
+  console.log('serving JSON', req.params);
   db.query("SELECT * FROM user_view WHERE user_name = $1", [req.params.user_name], function(err, result) {
     if (err) {
       console.log('error');
@@ -312,9 +314,7 @@ app.get('/user/:user_name', function (req, res) {
   });
 });
   
-
-
-app.listen(process.env.PORT, function() {
+app.listen(process.env['PORT'], function() {
   console.log('listening');
 });
 
